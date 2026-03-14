@@ -123,3 +123,13 @@
   color: #93c5fd;
   text-align: center;
 }
+
+.razorpay-info {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #64748b;
+  text-align: center;
+}

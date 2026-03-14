@@ -1,50 +1,64 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import API from '../api/axios';
+import useRazorpay from '../hooks/useRazorpay';
 import './Pay.css';
 
 export default function AddMoney() {
   const [amount, setAmount] = useState('');
-  const [method, setMethod] = useState('mock_upi');
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+  const { openPayment } = useRazorpay();
   const navigate = useNavigate();
 
   const quickAmounts = [100, 200, 500, 1000, 2000, 5000];
 
-  const handleSubmit = async (e) => {
+  const handleAddMoney = async (e) => {
     e.preventDefault();
-    setStatus(null);
+    if (!amount || amount <= 0) return;
     setLoading(true);
-    try {
-      const res = await API.post('/api/wallet/add-money', {
-        amount: parseFloat(amount),
-        method
-      });
-      setStatus({ type: 'success', msg: res.data.message });
-      setTimeout(() => navigate('/dashboard'), 2000);
-    } catch (err) {
-      setStatus({ type: 'error', msg: err.response?.data?.detail || 'Failed to add money.' });
-    } finally {
-      setLoading(false);
-    }
+    setStatus(null);
+
+    openPayment({
+      amount: parseFloat(amount),
+      name: user?.name || 'Student',
+      description: `Add Rs.${amount} to CampusPay Wallet`,
+      onSuccess: async (response) => {
+        try {
+          const res = await API.post('/api/wallet/add-money', {
+            amount: parseFloat(amount),
+            method: 'razorpay',
+          });
+          setStatus({ type: 'success', msg: res.data.message });
+          setTimeout(() => navigate('/dashboard'), 2000);
+        } catch (err) {
+          setStatus({ type: 'error', msg: 'Payment done but wallet update failed.' });
+        } finally {
+          setLoading(false);
+        }
+      },
+      onFailure: (msg) => {
+        setStatus({ type: 'error', msg: msg || 'Payment cancelled.' });
+        setLoading(false);
+      }
+    });
   };
 
   return (
     <div className="pay-page">
       <div className="pay-card">
         <h2>Add Money</h2>
-        <p className="pay-sub">Top up your CampusPay wallet</p>
+        <p className="pay-sub">Top up your CampusPay wallet via Razorpay</p>
 
         {status && (
           <div className={`pay-status ${status.type}`}>
             {status.type === 'success' ? '✅' : '❌'} {status.msg}
-            {status.type === 'success' && <div className="txn-id">Redirecting to dashboard...</div>}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="pay-form">
-          {/* Quick amount buttons */}
+        <form onSubmit={handleAddMoney} className="pay-form">
           <div className="form-group">
             <label>Quick Select</label>
             <div className="quick-amounts">
@@ -52,17 +66,17 @@ export default function AddMoney() {
                 <button
                   key={a}
                   type="button"
-                 className={`amount-btn ${Number(amount) === a ? 'selected' : ''}`}
+                  className={`amount-btn ${amount == a ? 'selected' : ''}`}
                   onClick={() => setAmount(String(a))}
                 >
-                  ₹{a}
+                  Rs.{a}
                 </button>
               ))}
             </div>
           </div>
 
           <div className="form-group">
-            <label>Or Enter Amount (₹)</label>
+            <label>Or Enter Amount</label>
             <input
               type="number"
               placeholder="Enter amount"
@@ -73,16 +87,12 @@ export default function AddMoney() {
             />
           </div>
 
-          <div className="form-group">
-            <label>Payment Method</label>
-            <select value={method} onChange={e => setMethod(e.target.value)}>
-              <option value="mock_upi">Mock UPI</option>
-              <option value="mock_card">Mock Card</option>
-            </select>
+          <div className="razorpay-info">
+            <span>Pay via UPI, Cards, NetBanking or Wallets</span>
           </div>
 
-          <button type="submit" className="pay-btn" disabled={loading}>
-            {loading ? 'Processing...' : `Add ₹${amount || '0'}`}
+          <button type="submit" className="pay-btn" disabled={loading || !amount}>
+            {loading ? 'Opening payment...' : `Add Rs.${amount || '0'} via Razorpay`}
           </button>
         </form>
       </div>
