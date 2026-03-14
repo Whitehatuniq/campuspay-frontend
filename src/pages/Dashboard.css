@@ -128,3 +128,8 @@
 .summary-amount { font-size: 24px; font-weight: 700; }
 .summary-card.spent .summary-amount  { color: #f87171; }
 .summary-card.received .summary-amount { color: #4ade80; }
+
+/* Override quick actions for 6 items */
+.quick-actions {
+  grid-template-columns: repeat(3, 1fr) !important;
+}

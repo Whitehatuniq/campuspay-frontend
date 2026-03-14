@@ -56,7 +56,9 @@ export default function Dashboard() {
           { label: 'Send Money',  icon: '💸', path: '/pay' },
           { label: 'Exam Fee',   icon: '📝', path: '/exam-fee' },
           { label: 'Event Fee',  icon: '🎪', path: '/event-fee' },
+          { label: 'Canteen',    icon: '🍽️', path: '/canteen' },
           { label: 'History',    icon: '📋', path: '/transactions' },
+          { label: 'Add Money',  icon: '💰', path: '/add-money' },
         ].map(action => (
           <Link key={action.path} to={action.path} className="action-card">
             <span className="action-icon">{action.icon}</span>
