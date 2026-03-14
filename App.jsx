@@ -2,17 +2,16 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
-
-import Login        from './pages/Login';
-import Register     from './pages/Register';
-import Dashboard    from './pages/Dashboard';
-import Pay          from './pages/Pay';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import Pay from './pages/Pay';
 import Transactions from './pages/Transactions';
-import ExamFee      from './pages/ExamFee';
-import AddMoney     from './pages/AddMoney';
-import EventFee     from './pages/EventFee';
-import Canteen      from './pages/Canteen';
-
+import ExamFee from './pages/ExamFee';
+import AddMoney from './pages/AddMoney';
+import EventFee from './pages/EventFee';
+import Canteen from './pages/Canteen';
+import Settings from './pages/Settings';
 import './App.css';
 
 export default function App() {
@@ -21,15 +20,16 @@ export default function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/login"    element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard"    element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/pay"          element={<PrivateRoute><Pay /></PrivateRoute>} />
+          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="/pay" element={<PrivateRoute><Pay /></PrivateRoute>} />
           <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
-          <Route path="/exam-fee"     element={<PrivateRoute><ExamFee /></PrivateRoute>} />
-          <Route path="/add-money"    element={<PrivateRoute><AddMoney /></PrivateRoute>} />
-          <Route path="/event-fee"    element={<PrivateRoute><EventFee /></PrivateRoute>} />
-          <Route path="/canteen"      element={<PrivateRoute><Canteen /></PrivateRoute>} />
+          <Route path="/exam-fee" element={<PrivateRoute><ExamFee /></PrivateRoute>} />
+          <Route path="/add-money" element={<PrivateRoute><AddMoney /></PrivateRoute>} />
+          <Route path="/event-fee" element={<PrivateRoute><EventFee /></PrivateRoute>} />
+          <Route path="/canteen" element={<PrivateRoute><Canteen /></PrivateRoute>} />
+          <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
