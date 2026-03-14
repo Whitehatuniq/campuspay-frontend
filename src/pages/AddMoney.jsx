@@ -66,7 +66,7 @@ export default function AddMoney() {
                 <button
                   key={a}
                   type="button"
-                  className={`amount-btn ${amount == a ? 'selected' : ''}`}
+                  className={`amount-btn ${amount === String(a) ? 'selected' : ''}`}
                   onClick={() => setAmount(String(a))}
                 >
                   Rs.{a}
