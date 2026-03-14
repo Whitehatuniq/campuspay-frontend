@@ -1,0 +1,61 @@
+.txn-page { max-width: 680px; margin: 0 auto; padding: 32px 24px; }
+
+.txn-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.txn-header h2 { font-size: 20px; font-weight: 700; color: #f1f5f9; }
+
+.txn-filters { display: flex; gap: 8px; }
+
+.filter-btn {
+  padding: 6px 16px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 20px;
+  color: #94a3b8;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn.active,
+.filter-btn:hover { background: #1e3a5f; border-color: #38bdf8; color: #38bdf8; }
+
+.txn-empty { text-align: center; color: #64748b; padding: 60px 0; }
+
+.txn-list { display: flex; flex-direction: column; gap: 8px; }
+
+.txn-item {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: border-color 0.2s;
+}
+
+.txn-item:hover { border-color: #475569; }
+
+.txn-left { display: flex; align-items: center; gap: 14px; }
+
+.txn-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.txn-dot.debit  { background: #f87171; }
+.txn-dot.credit { background: #4ade80; }
+
+.txn-type { font-size: 14px; font-weight: 600; color: #f1f5f9; }
+.txn-upi  { font-size: 12px; color: #64748b; margin-top: 2px; }
+.txn-date { font-size: 11px; color: #475569; margin-top: 2px; }
+
+.txn-amount { font-size: 16px; font-weight: 700; }
+.txn-amount.debit  { color: #f87171; }
+.txn-amount.credit { color: #4ade80; }
