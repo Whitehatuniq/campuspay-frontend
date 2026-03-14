@@ -29,6 +29,7 @@ export default function App() {
           <Route path="/add-money" element={<PrivateRoute><AddMoney /></PrivateRoute>} />
           <Route path="/event-fee" element={<PrivateRoute><EventFee /></PrivateRoute>} />
           <Route path="/canteen" element={<PrivateRoute><Canteen /></PrivateRoute>} />
+          <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
