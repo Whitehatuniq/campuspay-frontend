@@ -21,11 +21,11 @@ export default function AdminDashboard() {
   const [txnFilter, setTxnFilter] = useState('all');
   const [status, setStatus] = useState(null);
 
-  if (user?.role !== 'admin') return <Navigate to="/dashboard" replace />;
-
   useEffect(() => {
-    fetchAll();
-  }, []);
+    if (user?.role === 'admin') fetchAll();
+  }, [user]);
+
+  if (user?.role !== 'admin') return <Navigate to="/dashboard" replace />;
 
   const fetchAll = async () => {
     setLoading(true);
@@ -91,7 +91,6 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* Tabs */}
       <div className="admin-tabs">
         {[
           { id: 'overview',     label: '📊 Overview' },
@@ -108,16 +107,14 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* OVERVIEW TAB */}
       {activeTab === 'overview' && stats && (
         <div className="overview-content">
-          {/* Stats grid */}
           <div className="stats-grid">
             {[
-              { label: 'Total Students',      value: stats.total_users,              icon: '👥', color: 'blue' },
-              { label: 'Total Transactions',  value: stats.total_transactions,       icon: '💳', color: 'purple' },
-              { label: 'Total Revenue',       value: `₹${totalRevenue.toFixed(2)}`,  icon: '💰', color: 'green' },
-              { label: 'Pending Payments',    value: stats.pending_payments,         icon: '⏳', color: 'amber' },
+              { label: 'Total Students',     value: stats.total_users,             icon: '👥', color: 'blue' },
+              { label: 'Total Transactions', value: stats.total_transactions,      icon: '💳', color: 'purple' },
+              { label: 'Total Revenue',      value: `₹${totalRevenue.toFixed(2)}`, icon: '💰', color: 'green' },
+              { label: 'Pending Payments',   value: stats.pending_payments,        icon: '⏳', color: 'amber' },
             ].map(stat => (
               <div key={stat.label} className={`stat-card ${stat.color}`}>
                 <span className="stat-icon">{stat.icon}</span>
@@ -127,7 +124,6 @@ export default function AdminDashboard() {
             ))}
           </div>
 
-          {/* Payment breakdown */}
           <div className="breakdown-section">
             <h3>Payment Breakdown</h3>
             <div className="breakdown-grid">
@@ -146,7 +142,6 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Recent transactions */}
           <div className="recent-section">
             <h3>Recent Transactions</h3>
             <div className="recent-list">
@@ -167,7 +162,6 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* USERS TAB */}
       {activeTab === 'users' && (
         <div className="users-content">
           <div className="users-toolbar">
@@ -180,41 +174,25 @@ export default function AdminDashboard() {
             />
             <span className="user-count">{filteredUsers.length} students</span>
           </div>
-
           <div className="users-table-wrap">
             <table className="users-table">
               <thead>
                 <tr>
-                  <th>Student</th>
-                  <th>Enrollment</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Status</th>
-                  <th>Action</th>
+                  <th>Student</th><th>Enrollment</th><th>Email</th>
+                  <th>Phone</th><th>Status</th><th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredUsers.filter(u => u.role === 'student').map(u => (
                   <tr key={u.uid}>
-                    <td>
-                      <div className="user-cell">
-                        <span className="user-avatar">{u.avatar || '👨‍🎓'}</span>
-                        <span>{u.name}</span>
-                      </div>
-                    </td>
+                    <td><div className="user-cell"><span className="user-avatar">{u.avatar || '👨‍🎓'}</span><span>{u.name}</span></div></td>
                     <td>{u.enrollment_no || '—'}</td>
                     <td>{u.email}</td>
                     <td>{u.phone || '—'}</td>
+                    <td><span className={`status-badge ${u.is_active ? 'active' : 'inactive'}`}>{u.is_active ? '✅ Active' : '❌ Inactive'}</span></td>
                     <td>
-                      <span className={`status-badge ${u.is_active ? 'active' : 'inactive'}`}>
-                        {u.is_active ? '✅ Active' : '❌ Inactive'}
-                      </span>
-                    </td>
-                    <td>
-                      <button
-                        className={`toggle-btn ${u.is_active ? 'deactivate' : 'activate'}`}
-                        onClick={() => handleToggleUser(u.uid, u.is_active)}
-                      >
+                      <button className={`toggle-btn ${u.is_active ? 'deactivate' : 'activate'}`}
+                        onClick={() => handleToggleUser(u.uid, u.is_active)}>
                         {u.is_active ? 'Deactivate' : 'Activate'}
                       </button>
                     </td>
@@ -226,7 +204,6 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* TRANSACTIONS TAB */}
       {activeTab === 'transactions' && (
         <div className="txns-content">
           <div className="txns-toolbar">
@@ -238,18 +215,10 @@ export default function AdminDashboard() {
             </select>
             <span className="user-count">{filteredTxns.length} transactions</span>
           </div>
-
           <div className="users-table-wrap">
             <table className="users-table">
               <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>From</th>
-                  <th>To</th>
-                  <th>Type</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                </tr>
+                <tr><th>Date</th><th>From</th><th>To</th><th>Type</th><th>Amount</th><th>Status</th></tr>
               </thead>
               <tbody>
                 {filteredTxns.map(t => (
