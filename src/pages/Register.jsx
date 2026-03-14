@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import API from '../api/axios';
+import logo from '../campuspay_logo.png';
 import './Auth.css';
 
 export default function Register() {
-  const [form, setForm] = useState({
-    name: '', email: '', password: '', enrollment_no: '', phone: ''
-  });
+  const [form, setForm] = useState({ name: '', email: '', password: '', enrollment_no: '', phone: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -31,13 +30,11 @@ export default function Register() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-header">
-          <span className="auth-logo">🎓</span>
+          <img src={logo} alt="CampusPay" className="auth-logo-img" />
           <h1>CampusPay</h1>
           <p>Create your student account</p>
         </div>
-
         {error && <div className="auth-error">{error}</div>}
-
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label>Full Name</label>
@@ -49,7 +46,7 @@ export default function Register() {
           </div>
           <div className="form-group">
             <label>Enrollment Number</label>
-            <input type="text" placeholder="2021BCA001" value={form.enrollment_no} onChange={set('enrollment_no')} />
+            <input type="text" placeholder="2024BCA101" value={form.enrollment_no} onChange={set('enrollment_no')} />
           </div>
           <div className="form-group">
             <label>Phone</label>
@@ -59,12 +56,10 @@ export default function Register() {
             <label>Password</label>
             <input type="password" placeholder="Create a password" value={form.password} onChange={set('password')} required />
           </div>
-
           <button type="submit" className="auth-btn" disabled={loading}>
             {loading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
-
         <p className="auth-footer">
           Already have an account? <Link to="/login">Sign in</Link>
         </p>

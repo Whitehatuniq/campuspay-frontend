@@ -99,3 +99,11 @@ body {
 
 .auth-footer a { color: #38bdf8; text-decoration: none; }
 .auth-footer a:hover { text-decoration: underline; }
+
+.auth-logo-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 16px;
+  margin-bottom: 4px;
+}

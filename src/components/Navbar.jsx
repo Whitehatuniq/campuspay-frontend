@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import logo from '../campuspay_logo.png';
 import './Navbar.css';
 
 export default function Navbar() {
@@ -15,7 +16,7 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <span className="brand-icon">🎓</span>
+        <img src={logo} alt="CampusPay" className="brand-logo" />
         <span className="brand-name">CampusPay</span>
       </div>
       <div className="navbar-links">
@@ -25,6 +26,7 @@ export default function Navbar() {
         <Link to="/exam-fee"     className={isActive('/exam-fee')}>Fees</Link>
         <Link to="/event-fee"    className={isActive('/event-fee')}>Events</Link>
         <Link to="/canteen"      className={isActive('/canteen')}>🍽️ Canteen</Link>
+        <Link to="/settings"     className={isActive('/settings')}>⚙️ Settings</Link>
         {user.role === 'admin' && (
           <Link to="/admin" className={isActive('/admin')}>Admin</Link>
         )}
