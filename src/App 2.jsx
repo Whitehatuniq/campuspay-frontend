@@ -1,0 +1,39 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
+import Navbar from './components/Navbar';
+
+import Login        from './pages/Login';
+import Register     from './pages/Register';
+import Dashboard    from './pages/Dashboard';
+import Pay          from './pages/Pay';
+import Transactions from './pages/Transactions';
+import ExamFee      from './pages/ExamFee';
+import AddMoney     from './pages/AddMoney';
+import EventFee     from './pages/EventFee';
+
+import './App.css';
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/login"    element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          <Route path="/dashboard"    element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="/pay"          element={<PrivateRoute><Pay /></PrivateRoute>} />
+          <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
+          <Route path="/exam-fee"     element={<PrivateRoute><ExamFee /></PrivateRoute>} />
+          <Route path="/add-money"    element={<PrivateRoute><AddMoney /></PrivateRoute>} />
+          <Route path="/event-fee"    element={<PrivateRoute><EventFee /></PrivateRoute>} />
+
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
