@@ -7,11 +7,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
+  const handleLogout = () => { logout(); navigate('/login'); };
   const isActive = (path) => location.pathname === path ? 'active' : '';
 
   if (!user) return null;
@@ -22,17 +18,17 @@ export default function Navbar() {
         <span className="brand-icon">🎓</span>
         <span className="brand-name">CampusPay</span>
       </div>
-
       <div className="navbar-links">
         <Link to="/dashboard"    className={isActive('/dashboard')}>Dashboard</Link>
         <Link to="/pay"          className={isActive('/pay')}>Pay</Link>
         <Link to="/transactions" className={isActive('/transactions')}>History</Link>
         <Link to="/exam-fee"     className={isActive('/exam-fee')}>Fees</Link>
+        <Link to="/event-fee"    className={isActive('/event-fee')}>Events</Link>
+        <Link to="/canteen"      className={isActive('/canteen')}>🍽️ Canteen</Link>
         {user.role === 'admin' && (
           <Link to="/admin" className={isActive('/admin')}>Admin</Link>
         )}
       </div>
-
       <div className="navbar-user">
         <span className="user-name">Hi, {user.name?.split(' ')[0]}</span>
         <button className="logout-btn" onClick={handleLogout}>Logout</button>
