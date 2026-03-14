@@ -26,6 +26,7 @@ export default function Navbar() {
         <Link to="/exam-fee"     className={isActive('/exam-fee')}>Fees</Link>
         <Link to="/event-fee"    className={isActive('/event-fee')}>Events</Link>
         <Link to="/canteen"      className={isActive('/canteen')}>🍽️ Canteen</Link>
+        <Link to="/statement" className={isActive("/statement")}>📄 Statement</Link>
         <Link to="/settings"     className={isActive('/settings')}>⚙️ Settings</Link>
         {user.role === 'admin' && (
           <Link to="/admin" className={isActive('/admin')}>Admin</Link>
