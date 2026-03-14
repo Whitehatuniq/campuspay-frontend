@@ -12,6 +12,7 @@ import AddMoney from './pages/AddMoney';
 import EventFee from './pages/EventFee';
 import Canteen from './pages/Canteen';
 import Settings from './pages/Settings';
+import Statement from './pages/Statement';
 import './App.css';
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/event-fee" element={<PrivateRoute><EventFee /></PrivateRoute>} />
           <Route path="/canteen" element={<PrivateRoute><Canteen /></PrivateRoute>} />
           <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+          <Route path="/statement" element={<PrivateRoute><Statement /></PrivateRoute>} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
