@@ -26,12 +26,14 @@ export default function Navbar() {
         <Link to="/exam-fee"     className={isActive('/exam-fee')}>Fees</Link>
         <Link to="/event-fee"    className={isActive('/event-fee')}>Events</Link>
         <Link to="/canteen"      className={isActive('/canteen')}>🍽️ Canteen</Link>
-        <Link to="/qr-scanner" className={isActive("/qr-scanner")}>📷 Scan QR</Link>
-        <Link to="/statement" className={isActive("/statement")}>📄 Statement</Link>
+        <Link to="/qr-scanner"   className={isActive('/qr-scanner')}>📷 Scan QR</Link>
+        <Link to="/statement"    className={isActive('/statement')}>📄 Statement</Link>
         <Link to="/settings"     className={isActive('/settings')}>⚙️ Settings</Link>
         {user.role === 'admin' && (
-          <Link to="/admin-dashboard" className={isActive("/admin-dashboard")}>🛠️ Dashboard</Link>
-          <Link to="/admin-manage" className={isActive("/admin-manage")}>⚙️ Manage className={isActive('/admin')}>Admin</Link>
+          <>
+            <Link to="/admin-dashboard" className={isActive('/admin-dashboard')}>🛠️ Dashboard</Link>
+            <Link to="/admin-manage"    className={isActive('/admin-manage')}>⚙️ Manage</Link>
+          </>
         )}
       </div>
       <div className="navbar-user">
