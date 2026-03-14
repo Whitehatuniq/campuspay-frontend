@@ -11,6 +11,7 @@ import ExamFee from './pages/ExamFee';
 import AddMoney from './pages/AddMoney';
 import EventFee from './pages/EventFee';
 import Canteen from './pages/Canteen';
+import Settings from './pages/Settings';
 import './App.css';
 
 export default function App() {
