@@ -12,7 +12,7 @@ import AddMoney from './pages/AddMoney';
 import EventFee from './pages/EventFee';
 import Canteen from './pages/Canteen';
 import Settings from './pages/Settings';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminManage from './pages/AdminManage'; from './pages/AdminDashboard';
 import QRScanner from './pages/QRScanner';
 import Statement from './pages/Statement';
 import './App.css';
@@ -33,6 +33,7 @@ export default function App() {
           <Route path="/event-fee" element={<PrivateRoute><EventFee /></PrivateRoute>} />
           <Route path="/canteen" element={<PrivateRoute><Canteen /></PrivateRoute>} />
           <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+          <Route path="/admin-manage" element={<PrivateRoute><AdminManage /></PrivateRoute>} />
           <Route path="/admin-dashboard" element={<PrivateRoute adminOnly><AdminDashboard /></PrivateRoute>} />
           <Route path="/qr-scanner" element={<PrivateRoute><QRScanner /></PrivateRoute>} />
           <Route path="/statement" element={<PrivateRoute><Statement /></PrivateRoute>} />
