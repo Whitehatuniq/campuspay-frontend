@@ -30,7 +30,7 @@ export default function Navbar() {
         <Link to="/statement" className={isActive("/statement")}>📄 Statement</Link>
         <Link to="/settings"     className={isActive('/settings')}>⚙️ Settings</Link>
         {user.role === 'admin' && (
-          <Link to="/admin" className={isActive('/admin')}>Admin</Link>
+          <Link to="/admin-dashboard" className={isActive('/admin')}>Admin</Link>
         )}
       </div>
       <div className="navbar-user">
