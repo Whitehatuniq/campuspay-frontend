@@ -3,12 +3,14 @@ import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 
-import Login       from './pages/Login';
-import Register    from './pages/Register';
-import Dashboard   from './pages/Dashboard';
-import Pay         from './pages/Pay';
+import Login        from './pages/Login';
+import Register     from './pages/Register';
+import Dashboard    from './pages/Dashboard';
+import Pay          from './pages/Pay';
 import Transactions from './pages/Transactions';
-import ExamFee     from './pages/ExamFee';
+import ExamFee      from './pages/ExamFee';
+import AddMoney     from './pages/AddMoney';
+import EventFee     from './pages/EventFee';
 
 import './App.css';
 
@@ -18,17 +20,16 @@ export default function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          {/* Public routes */}
           <Route path="/login"    element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* Protected routes */}
-          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/pay"       element={<PrivateRoute><Pay /></PrivateRoute>} />
+          <Route path="/dashboard"    element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="/pay"          element={<PrivateRoute><Pay /></PrivateRoute>} />
           <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
-          <Route path="/exam-fee"  element={<PrivateRoute><ExamFee /></PrivateRoute>} />
+          <Route path="/exam-fee"     element={<PrivateRoute><ExamFee /></PrivateRoute>} />
+          <Route path="/add-money"    element={<PrivateRoute><AddMoney /></PrivateRoute>} />
+          <Route path="/event-fee"    element={<PrivateRoute><EventFee /></PrivateRoute>} />
 
-          {/* Default redirect */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
