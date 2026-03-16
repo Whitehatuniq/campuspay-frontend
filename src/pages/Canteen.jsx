@@ -202,7 +202,7 @@ export default function Canteen() {
         amount={cartTotal}
         title={`Order — ${selected?.name}`}
         description={cartItems.map(i => `${i.name} ×${cart[i.item_id]}`).join(', ')}
-        toUpi={`${selected?.canteen_id}@campuspay`}
+        toUpi={`${selected?.9667295900-3@ybl`}
         accentColor={accent}
         walletBalance={balance}
         apiEndpoint="/api/canteen/order"

@@ -157,7 +157,7 @@ export default function ExamFee() {
           amount={payingFee.amount}
           title={payingFee.category === 'hostel' ? 'Hostel Fee Payment' : 'Exam Fee Payment'}
           description={payingFee.fee_name}
-          toUpi="university@campuspay"
+          toUpi="9667295900-3@ybl"
           accentColor={payingFee.category === 'hostel' ? '#a78bfa' : '#38bdf8'}
           walletBalance={balance}
           apiEndpoint="/api/fees/pay-fee"
