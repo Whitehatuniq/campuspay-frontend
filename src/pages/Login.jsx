@@ -123,23 +123,7 @@ export default function Login() {
         <p className="auth-switch">
           Don't have an account? <Link to="/register">Create account</Link>
         </p>
-
-        {/* Demo accounts */}
-        <div className="auth-demo">
-          <div className="auth-demo-title">Demo accounts</div>
-          <div className="auth-demo-grid">
-            {[
-              { label: 'Student',  email: 'eklavya@test.com',        pass: 'test123' },
-              { label: 'Admin',    email: 'admin@poornima.edu',       pass: 'Admin@123' },
-            ].map(d => (
-              <button key={d.label} className="auth-demo-btn"
-                onClick={() => { setEmail(d.email); setPassword(d.pass); }}>
-                <span className="demo-label">{d.label}</span>
-                <span className="demo-email">{d.email}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+      </div>
       </div>
     </div>
   );
