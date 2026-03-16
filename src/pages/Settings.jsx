@@ -1,143 +1,171 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useState, useEffect, useRef } from 'react';
+import { User, Shield, Lock, Palette, Camera, Upload, Check, Eye, EyeOff, Sun, Moon } from 'lucide-react';
 import API from '../api/axios';
+import { useAuth } from '../context/AuthContext';
+import './Pay.css';
 import './Settings.css';
 
-const AVATARS = [
-  '👨‍💻', '👩‍💻', '🧑‍💻', '👨‍🎓', '👩‍🎓', '🧑‍🎓',
-  '🦊', '🐼', '🐨', '🦁', '🐯', '🦊',
-  '🧑‍🚀', '👨‍🎨', '👩‍🎨', '🧙', '🦸', '🧛'
+const BITMOJIS = [
+  { id: 'bm1',  emoji: '🧑‍💻', label: 'Developer' },
+  { id: 'bm2',  emoji: '👩‍🎓', label: 'Graduate' },
+  { id: 'bm3',  emoji: '🧑‍🎓', label: 'Student' },
+  { id: 'bm4',  emoji: '👨‍💼', label: 'Professional' },
+  { id: 'bm5',  emoji: '🦸',   label: 'Hero' },
+  { id: 'bm6',  emoji: '🧑‍🎨', label: 'Artist' },
+  { id: 'bm7',  emoji: '🧑‍🔬', label: 'Scientist' },
+  { id: 'bm8',  emoji: '🧑‍🏫', label: 'Teacher' },
+  { id: 'bm9',  emoji: '🦊',   label: 'Fox' },
+  { id: 'bm10', emoji: '🐼',   label: 'Panda' },
+  { id: 'bm11', emoji: '🦁',   label: 'Lion' },
+  { id: 'bm12', emoji: '🐯',   label: 'Tiger' },
+  { id: 'bm13', emoji: '🤖',   label: 'Robot' },
+  { id: 'bm14', emoji: '👾',   label: 'Alien' },
+  { id: 'bm15', emoji: '🧙',   label: 'Wizard' },
+  { id: 'bm16', emoji: '🥷',   label: 'Ninja' },
+];
+
+const TABS = [
+  { id: 'profile',    label: 'Profile',    icon: User    },
+  { id: 'security',  label: 'Security',   icon: Shield  },
+  { id: 'applock',   label: 'App Lock',   icon: Lock    },
+  { id: 'appearance',label: 'Appearance', icon: Palette },
 ];
 
 export default function Settings() {
-  const { user, login } = useAuth();
-  const [activeTab, setActiveTab] = useState('profile');
-  const [status, setStatus] = useState(null);
+  const { user } = useAuth();
+  const fileRef  = useRef(null);
 
-  // Profile state
-  const [avatar, setAvatar] = useState(user?.avatar || '👨‍💻');
-  const [phone, setPhone] = useState(user?.phone || '');
-  const [savingProfile, setSavingProfile] = useState(false);
+  const [tab,           setTab]           = useState('profile');
+  const [phone,         setPhone]         = useState(user?.phone || '');
+  const [avatar,        setAvatar]        = useState(user?.avatar || '');
+  const [photoPreview,  setPhotoPreview]  = useState(user?.photo_url || null);
+  const [photoTab,      setPhotoTab]      = useState('bitmoji'); // 'bitmoji' | 'upload'
+  const [saving,        setSaving]        = useState(false);
+  const [msg,           setMsg]           = useState(null);
 
-  // Security state
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [oldPin, setOldPin] = useState('');
-  const [newPin, setNewPin] = useState('');
-  const [savingPassword, setSavingPassword] = useState(false);
-  const [savingPin, setSavingPin] = useState(false);
+  // Security
+  const [oldPass,   setOldPass]   = useState('');
+  const [newPass,   setNewPass]   = useState('');
+  const [showPass,  setShowPass]  = useState(false);
+  const [oldPin,    setOldPin]    = useState('');
+  const [newPin,    setNewPin]    = useState('');
 
-  // App lock state
-  const [appLockEnabled, setAppLockEnabled] = useState(
-    localStorage.getItem('appLockEnabled') === 'true'
-  );
-  const [lockPin, setLockPin] = useState('');
-  const [confirmLockPin, setConfirmLockPin] = useState('');
+  // App lock
+  const [lockEnabled,  setLockEnabled]  = useState(false);
+  const [lockPin,      setLockPin]      = useState('');
+  const [confirmPin,   setConfirmPin]   = useState('');
 
-  // Theme state
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+  // Theme
+  const [theme, setTheme] = useState('dark');
 
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+  const showMsg = (type, text) => {
+    setMsg({ type, text });
+    setTimeout(() => setMsg(null), 3000);
+  };
 
-  const showStatus = (type, msg) => {
-    setStatus({ type, msg });
-    setTimeout(() => setStatus(null), 3000);
+  // Handle real photo upload
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { showMsg('error', 'Image too large. Max 5MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setPhotoPreview(ev.target.result);
+      setAvatar('');  // clear bitmoji when photo is set
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Select bitmoji
+  const handleBitmoji = (bm) => {
+    setAvatar(bm.emoji);
+    setPhotoPreview(null); // clear photo when bitmoji is selected
   };
 
   const handleSaveProfile = async () => {
-    setSavingProfile(true);
+    setSaving(true);
     try {
-      await API.patch('/api/auth/update-profile', { phone, avatar });
-      const updatedUser = { ...user, phone, avatar };
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-      login(updatedUser, localStorage.getItem('token'));
-      showStatus('success', 'Profile updated successfully!');
-    } catch (err) {
-      showStatus('error', err.response?.data?.detail || 'Update failed.');
-    } finally {
-      setSavingProfile(false);
+      const payload = { phone };
+      if (avatar)       payload.avatar    = avatar;
+      if (photoPreview && photoPreview.startsWith('data:')) payload.photo_url = photoPreview;
+      await API.patch('/api/auth/update-profile', payload);
+      showMsg('success', 'Profile updated successfully!');
+    } catch {
+      showMsg('error', 'Failed to update profile.');
     }
+    setSaving(false);
   };
 
-  const handleChangePassword = async (e) => {
-    e.preventDefault();
-    setSavingPassword(true);
+  const handleChangePassword = async () => {
+    if (!oldPass || !newPass) { showMsg('error', 'Fill both fields'); return; }
+    if (newPass.length < 6)   { showMsg('error', 'New password must be 6+ chars'); return; }
+    setSaving(true);
     try {
-      await API.post(`/api/auth/change-password?old_password=${oldPassword}&new_password=${newPassword}`);
-      showStatus('success', 'Password changed successfully!');
-      setOldPassword(''); setNewPassword('');
-    } catch (err) {
-      showStatus('error', err.response?.data?.detail || 'Failed to change password.');
-    } finally {
-      setSavingPassword(false);
+      await API.post('/api/auth/change-password', { old_password: oldPass, new_password: newPass });
+      showMsg('success', 'Password changed!');
+      setOldPass(''); setNewPass('');
+    } catch (e) {
+      showMsg('error', e.response?.data?.detail || 'Failed to change password.');
     }
+    setSaving(false);
   };
 
-  const handleChangePin = async (e) => {
-    e.preventDefault();
-    setSavingPin(true);
+  const handleChangePIN = async () => {
+    if (!oldPin || !newPin || newPin.length !== 4) { showMsg('error', 'Enter valid 4-digit PINs'); return; }
+    setSaving(true);
     try {
-      await API.post(`/api/wallet/change-pin?old_pin=${oldPin}&new_pin=${newPin}`);
-      showStatus('success', 'UPI PIN changed successfully!');
+      await API.post('/api/wallet/change-pin', { old_pin: oldPin, new_pin: newPin });
+      showMsg('success', 'UPI PIN changed!');
       setOldPin(''); setNewPin('');
-    } catch (err) {
-      showStatus('error', err.response?.data?.detail || 'Failed to change PIN.');
-    } finally {
-      setSavingPin(false);
+    } catch (e) {
+      showMsg('error', e.response?.data?.detail || 'Failed to change PIN.');
     }
+    setSaving(false);
   };
 
-  const handleSetAppLock = (e) => {
-    e.preventDefault();
-    if (lockPin.length < 4) { showStatus('error', 'PIN must be at least 4 digits'); return; }
-    if (lockPin !== confirmLockPin) { showStatus('error', 'PINs do not match'); return; }
-    localStorage.setItem('appLockPin', lockPin);
-    localStorage.setItem('appLockEnabled', 'true');
-    setAppLockEnabled(true);
-    setLockPin(''); setConfirmLockPin('');
-    showStatus('success', 'App lock enabled!');
+  const handleSetLock = () => {
+    if (lockPin.length !== 4) { showMsg('error', 'Enter a 4-digit lock PIN'); return; }
+    if (lockPin !== confirmPin) { showMsg('error', 'PINs do not match'); return; }
+    localStorage.setItem('app_lock_pin', lockPin);
+    setLockEnabled(true);
+    showMsg('success', 'App lock set!');
+    setLockPin(''); setConfirmPin('');
   };
 
-  const handleDisableAppLock = () => {
-    localStorage.removeItem('appLockPin');
-    localStorage.setItem('appLockEnabled', 'false');
-    setAppLockEnabled(false);
-    showStatus('success', 'App lock disabled.');
+  const handleRemoveLock = () => {
+    localStorage.removeItem('app_lock_pin');
+    setLockEnabled(false);
+    showMsg('success', 'App lock removed.');
   };
 
-  const TABS = [
-    { id: 'profile',   label: '👤 Profile' },
-    { id: 'security',  label: '🔐 Security' },
-    { id: 'applock',   label: '🔒 App Lock' },
-    { id: 'theme',     label: '🎨 Appearance' },
-  ];
+  // Profile photo display
+  const renderAvatar = () => {
+    if (photoPreview) return <img src={photoPreview} alt="profile" className="profile-photo-img" />;
+    if (avatar)       return <span className="profile-bitmoji-display">{avatar}</span>;
+    return <User size={40} color="#64748b" />;
+  };
 
   return (
     <div className="settings-page">
-      <div className="settings-header">
-        <h2>Settings</h2>
-        <p>Manage your account and preferences</p>
+      <div className="page-hero" style={{ '--accent': '#94a3b8' }}>
+        <div className="page-hero-icon"><User size={28} color="#94a3b8" strokeWidth={1.8} /></div>
+        <div><h1>Settings</h1><p>Manage your profile and preferences</p></div>
       </div>
 
-      {status && (
-        <div className={`settings-status ${status.type}`}>
-          {status.type === 'success' ? '✅' : '❌'} {status.msg}
+      {msg && (
+        <div className={`settings-msg ${msg.type}`}>
+          {msg.type === 'success' ? <Check size={15} /> : '✕'} {msg.text}
         </div>
       )}
 
       <div className="settings-layout">
-        {/* Sidebar */}
+        {/* Sidebar tabs */}
         <div className="settings-sidebar">
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              className={`settings-tab ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              {tab.label}
+          {TABS.map(t => (
+            <button key={t.id} className={`settings-tab ${tab === t.id ? 'active' : ''}`}
+              onClick={() => setTab(t.id)}>
+              <t.icon size={17} strokeWidth={1.8} />
+              <span>{t.label}</span>
             </button>
           ))}
         </div>
@@ -145,173 +173,220 @@ export default function Settings() {
         {/* Content */}
         <div className="settings-content">
 
-          {/* PROFILE TAB */}
-          {activeTab === 'profile' && (
+          {/* ── PROFILE ── */}
+          {tab === 'profile' && (
             <div className="settings-section">
-              <h3>Profile</h3>
+              <h2>Profile</h2>
 
-              {/* Current avatar display */}
-              <div className="avatar-display">
-                <span className="avatar-big">{avatar}</span>
-                <div>
-                  <div className="avatar-name">{user?.name}</div>
-                  <div className="avatar-email">{user?.email}</div>
-                  <div className="avatar-enroll">{user?.enrollment_no}</div>
+              {/* Avatar preview */}
+              <div className="profile-avatar-center">
+                <div className="profile-avatar-wrap">
+                  {renderAvatar()}
+                  <button className="avatar-edit-btn" onClick={() => fileRef.current?.click()}>
+                    <Camera size={14} />
+                  </button>
                 </div>
+                <div className="profile-user-name">{user?.name}</div>
+                <div className="profile-user-upi">{user?.upi_id}</div>
               </div>
 
-              {/* Avatar picker */}
-              <div className="form-group">
-                <label>Choose Avatar</label>
-                <div className="avatar-grid">
-                  {AVATARS.map((av, i) => (
-                    <button
-                      key={i}
-                      className={`avatar-option ${avatar === av ? 'selected' : ''}`}
-                      onClick={() => setAvatar(av)}
-                    >
-                      {av}
-                    </button>
-                  ))}
-                </div>
+              {/* Photo source tabs */}
+              <div className="photo-source-tabs">
+                <button className={`photo-source-tab ${photoTab === 'bitmoji' ? 'active' : ''}`}
+                  onClick={() => setPhotoTab('bitmoji')}>
+                  😊 Bitmoji / Avatar
+                </button>
+                <button className={`photo-source-tab ${photoTab === 'upload' ? 'active' : ''}`}
+                  onClick={() => setPhotoTab('upload')}>
+                  <Upload size={14} /> Upload Photo
+                </button>
               </div>
 
-              <div className="form-group">
+              {/* Bitmoji picker */}
+              {photoTab === 'bitmoji' && (
+                <div className="bitmoji-section">
+                  <div className="section-label" style={{ marginBottom: 12 }}>Choose your avatar</div>
+                  <div className="bitmoji-grid">
+                    {BITMOJIS.map(bm => (
+                      <button key={bm.id}
+                        className={`bitmoji-btn ${avatar === bm.emoji && !photoPreview ? 'selected' : ''}`}
+                        onClick={() => handleBitmoji(bm)}
+                        title={bm.label}>
+                        <span className="bitmoji-emoji">{bm.emoji}</span>
+                        <span className="bitmoji-label">{bm.label}</span>
+                        {avatar === bm.emoji && !photoPreview && (
+                          <div className="bitmoji-check"><Check size={10} /></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Photo upload */}
+              {photoTab === 'upload' && (
+                <div className="upload-section">
+                  <input
+                    ref={fileRef}
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={handlePhotoUpload}
+                  />
+                  {photoPreview ? (
+                    <div className="upload-preview">
+                      <img src={photoPreview} alt="preview" className="upload-preview-img" />
+                      <div className="upload-preview-actions">
+                        <button className="upload-change-btn" onClick={() => fileRef.current?.click()}>
+                          <Camera size={14} /> Change Photo
+                        </button>
+                        <button className="upload-remove-btn" onClick={() => setPhotoPreview(null)}>
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="upload-dropzone" onClick={() => fileRef.current?.click()}>
+                      <Upload size={32} color="#64748b" />
+                      <p>Click to upload your photo</p>
+                      <span>JPG, PNG up to 5MB</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Phone */}
+              <div className="settings-field">
                 <label>Phone Number</label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={e => setPhone(e.target.value)}
-                  placeholder="9876543210"
-                  maxLength={10}
-                />
+                <input className="field-input" placeholder="+91 XXXXX XXXXX" value={phone}
+                  onChange={e => setPhone(e.target.value)} />
               </div>
 
-              <button className="save-btn" onClick={handleSaveProfile} disabled={savingProfile}>
-                {savingProfile ? 'Saving...' : 'Save Profile'}
+              <div className="settings-field readonly">
+                <label>Name</label>
+                <div className="field-readonly">{user?.name}</div>
+              </div>
+
+              <div className="settings-field readonly">
+                <label>Email</label>
+                <div className="field-readonly">{user?.email}</div>
+              </div>
+
+              <div className="settings-field readonly">
+                <label>UPI ID</label>
+                <div className="field-readonly">{user?.upi_id}</div>
+              </div>
+
+              <button className="save-btn" onClick={handleSaveProfile} disabled={saving}>
+                {saving ? 'Saving...' : 'Save Profile'}
               </button>
             </div>
           )}
 
-          {/* SECURITY TAB */}
-          {activeTab === 'security' && (
+          {/* ── SECURITY ── */}
+          {tab === 'security' && (
             <div className="settings-section">
-              <h3>Security</h3>
+              <h2>Security</h2>
 
-              <div className="security-info">
-                🛡️ Your account is protected with JWT authentication and bcrypt encryption.
+              <div className="security-block">
+                <h3>Change Password</h3>
+                <div className="settings-field">
+                  <label>Current Password</label>
+                  <div className="pass-field">
+                    <input className="field-input" type={showPass ? 'text' : 'password'} placeholder="Current password"
+                      value={oldPass} onChange={e => setOldPass(e.target.value)} />
+                    <button className="pass-toggle" onClick={() => setShowPass(s => !s)}>
+                      {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                </div>
+                <div className="settings-field">
+                  <label>New Password</label>
+                  <input className="field-input" type="password" placeholder="Min 6 characters"
+                    value={newPass} onChange={e => setNewPass(e.target.value)} />
+                </div>
+                <button className="save-btn" onClick={handleChangePassword} disabled={saving || !oldPass || !newPass}>
+                  Update Password
+                </button>
               </div>
 
-              {/* Change Password */}
-              <div className="sub-section">
-                <h4>Change Password</h4>
-                <form onSubmit={handleChangePassword}>
-                  <div className="form-group">
-                    <label>Current Password</label>
-                    <input type="password" value={oldPassword}
-                      onChange={e => setOldPassword(e.target.value)} required placeholder="Current password" />
-                  </div>
-                  <div className="form-group">
-                    <label>New Password</label>
-                    <input type="password" value={newPassword}
-                      onChange={e => setNewPassword(e.target.value)} required placeholder="New password (min 8 chars)" minLength={8} />
-                  </div>
-                  <button type="submit" className="save-btn" disabled={savingPassword}>
-                    {savingPassword ? 'Changing...' : 'Change Password'}
-                  </button>
-                </form>
-              </div>
-
-              {/* Change UPI PIN */}
-              <div className="sub-section">
-                <h4>Change UPI PIN</h4>
-                <form onSubmit={handleChangePin}>
-                  <div className="form-group">
-                    <label>Current PIN</label>
-                    <input type="password" value={oldPin}
-                      onChange={e => setOldPin(e.target.value)} required placeholder="Current PIN" maxLength={6} />
-                  </div>
-                  <div className="form-group">
-                    <label>New PIN (4-6 digits)</label>
-                    <input type="password" value={newPin}
-                      onChange={e => setNewPin(e.target.value)} required placeholder="New PIN" maxLength={6} />
-                  </div>
-                  <button type="submit" className="save-btn" disabled={savingPin}>
-                    {savingPin ? 'Changing...' : 'Change UPI PIN'}
-                  </button>
-                </form>
+              <div className="security-block">
+                <h3>Change UPI PIN</h3>
+                <div className="settings-field">
+                  <label>Current PIN</label>
+                  <input className="field-input pin-field" type="password" maxLength={4} placeholder="• • • •"
+                    value={oldPin} onChange={e => setOldPin(e.target.value.replace(/\D/g, ''))} />
+                </div>
+                <div className="settings-field">
+                  <label>New PIN</label>
+                  <input className="field-input pin-field" type="password" maxLength={4} placeholder="• • • •"
+                    value={newPin} onChange={e => setNewPin(e.target.value.replace(/\D/g, ''))} />
+                </div>
+                <button className="save-btn secondary" onClick={handleChangePIN} disabled={saving || !oldPin || newPin.length < 4}>
+                  Update PIN
+                </button>
               </div>
             </div>
           )}
 
-          {/* APP LOCK TAB */}
-          {activeTab === 'applock' && (
+          {/* ── APP LOCK ── */}
+          {tab === 'applock' && (
             <div className="settings-section">
-              <h3>App Lock</h3>
-              <p className="section-desc">Set a PIN to lock the app when you leave</p>
+              <h2>App Lock</h2>
+              <p className="section-desc">Protect your wallet with a PIN lock</p>
 
-              <div className={`lock-status ${appLockEnabled ? 'enabled' : 'disabled'}`}>
-                {appLockEnabled ? '🔒 App Lock is ON' : '🔓 App Lock is OFF'}
-              </div>
-
-              {!appLockEnabled ? (
-                <form onSubmit={handleSetAppLock}>
-                  <div className="form-group">
-                    <label>Set Lock PIN (4-6 digits)</label>
-                    <input type="password" value={lockPin}
-                      onChange={e => setLockPin(e.target.value)} placeholder="Enter PIN" maxLength={6} required />
-                  </div>
-                  <div className="form-group">
-                    <label>Confirm PIN</label>
-                    <input type="password" value={confirmLockPin}
-                      onChange={e => setConfirmLockPin(e.target.value)} placeholder="Confirm PIN" maxLength={6} required />
-                  </div>
-                  <button type="submit" className="save-btn">Enable App Lock</button>
-                </form>
+              {lockEnabled ? (
+                <div className="lock-enabled-card">
+                  <div className="lock-icon-wrap"><Lock size={28} color="#22c55e" /></div>
+                  <div><h3>App Lock is ON</h3><p>Your app is protected with a PIN</p></div>
+                  <button className="remove-lock-btn" onClick={handleRemoveLock}>Remove Lock</button>
+                </div>
               ) : (
-                <button className="danger-btn" onClick={handleDisableAppLock}>
-                  Disable App Lock
-                </button>
+                <>
+                  <div className="settings-field">
+                    <label>Set Lock PIN</label>
+                    <input className="field-input pin-field" type="password" maxLength={4} placeholder="• • • •"
+                      value={lockPin} onChange={e => setLockPin(e.target.value.replace(/\D/g, ''))} />
+                  </div>
+                  <div className="settings-field">
+                    <label>Confirm PIN</label>
+                    <input className="field-input pin-field" type="password" maxLength={4} placeholder="• • • •"
+                      value={confirmPin} onChange={e => setConfirmPin(e.target.value.replace(/\D/g, ''))} />
+                  </div>
+                  <button className="save-btn" onClick={handleSetLock} disabled={lockPin.length < 4 || confirmPin.length < 4}>
+                    Enable App Lock
+                  </button>
+                </>
               )}
             </div>
           )}
 
-          {/* THEME TAB */}
-          {activeTab === 'theme' && (
+          {/* ── APPEARANCE ── */}
+          {tab === 'appearance' && (
             <div className="settings-section">
-              <h3>Appearance</h3>
-              <p className="section-desc">Choose your preferred theme</p>
+              <h2>Appearance</h2>
 
-              <div className="theme-options">
-                {[
-                  { value: 'dark',  label: 'Dark Mode',  icon: '🌙', desc: 'Easy on the eyes at night' },
-                  { value: 'light', label: 'Light Mode',  icon: '☀️', desc: 'Clean and bright look' },
-                ].map(t => (
-                  <div
-                    key={t.value}
-                    className={`theme-card ${theme === t.value ? 'selected' : ''}`}
-                    onClick={() => setTheme(t.value)}
-                  >
-                    <span className="theme-icon">{t.icon}</span>
-                    <div>
-                      <div className="theme-label">{t.label}</div>
-                      <div className="theme-desc">{t.desc}</div>
-                    </div>
-                    {theme === t.value && <span className="theme-check">✅</span>}
-                  </div>
-                ))}
+              <div className="theme-row">
+                <button className={`theme-btn ${theme === 'dark' ? 'active' : ''}`} onClick={() => setTheme('dark')}>
+                  <Moon size={22} color="#38bdf8" />
+                  <span>Dark</span>
+                  {theme === 'dark' && <Check size={14} color="#38bdf8" className="theme-check" />}
+                </button>
+                <button className={`theme-btn ${theme === 'light' ? 'active' : ''}`} onClick={() => setTheme('light')}>
+                  <Sun size={22} color="#fbbf24" />
+                  <span>Light</span>
+                  <span className="coming-soon">Coming Soon</span>
+                </button>
               </div>
 
-              <div className="app-info">
-                <h4>App Information</h4>
-                <div className="info-row"><span>App Name</span><span>CampusPay</span></div>
-                <div className="info-row"><span>Version</span><span>1.0.0</span></div>
-                <div className="info-row"><span>University</span><span>Poornima University</span></div>
-                <div className="info-row"><span>Developer</span><span>Eklavya Jaiswal</span></div>
+              <div className="app-info-card">
+                <div className="app-info-row"><span>App Version</span><strong>2.0.0</strong></div>
+                <div className="app-info-row"><span>Platform</span><strong>Web</strong></div>
+                <div className="app-info-row"><span>University</span><strong>Poornima University, Jaipur</strong></div>
+                <div className="app-info-row"><span>Support</span><strong>campuspay@poornima.edu</strong></div>
               </div>
             </div>
           )}
-
         </div>
       </div>
     </div>
