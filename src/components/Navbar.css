@@ -2,47 +2,41 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 32px;
-  height: 64px;
-  background: #0f172a;
+  padding: 0 24px;
+  height: 60px;
+  background: #0a0f1e;
   border-bottom: 1px solid #1e293b;
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
-.navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.brand-icon { font-size: 22px; }
-
-.brand-name {
-  font-size: 18px;
-  font-weight: 700;
-  color: #38bdf8;
-  letter-spacing: -0.5px;
+.navbar-logo {
+  height: 36px;
+  object-fit: contain;
 }
 
 .navbar-links {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  gap: 2px;
 }
 
-.navbar-links a {
-  padding: 8px 16px;
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
   border-radius: 8px;
-  color: #94a3b8;
+  color: #64748b;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   transition: all 0.2s;
 }
 
-.navbar-links a:hover { background: #1e293b; color: #f1f5f9; }
-.navbar-links a.active { background: #1e3a5f; color: #38bdf8; }
+.nav-link:hover { background: #1e293b; color: #cbd5e1; }
+.nav-link.active { background: #0f2744; color: #38bdf8; }
 
 .navbar-user {
   display: flex;
@@ -50,24 +44,36 @@
   gap: 12px;
 }
 
-.user-name { font-size: 14px; color: #94a3b8; }
+.user-name {
+  font-size: 13px;
+  color: #64748b;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .logout-btn {
-  padding: 7px 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
   background: transparent;
-  border: 1px solid #334155;
+  border: 1px solid #1e293b;
   border-radius: 8px;
-  color: #94a3b8;
+  color: #64748b;
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.logout-btn:hover { border-color: #ef4444; color: #ef4444; }
+.logout-btn:hover { border-color: #ef4444; color: #ef4444; background: #7f1d1d1a; }
 
-.brand-logo {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-  border-radius: 8px;
+@media (max-width: 768px) {
+  .navbar { padding: 0 12px; }
+  .nav-link span { display: none; }
+  .nav-link { padding: 8px; }
+  .logout-btn span { display: none; }
+  .logout-btn { padding: 8px; }
+  .user-name { display: none; }
 }
