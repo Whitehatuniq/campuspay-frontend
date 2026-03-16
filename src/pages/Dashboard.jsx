@@ -54,6 +54,7 @@ export default function Dashboard() {
       <div className="quick-actions">
         {[
           { label: 'Send Money',  icon: '💸', path: '/pay' },
+          { label: 'Transport',    icon: '🚌', path: '/transport' },
           { label: 'Campus Fee',   icon: '📝', path: '/campus-fee' },
           { label: 'Events',  icon: '🎪', path: '/events' },
           { label: 'Canteen',    icon: '🍽️', path: '/canteen' },
