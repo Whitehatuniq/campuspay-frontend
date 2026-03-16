@@ -10,6 +10,7 @@ import Transactions from './pages/Transactions';
 import ExamFee from './pages/ExamFee';
 import AddMoney from './pages/AddMoney';
 import EventFee from './pages/EventFee';
+import Transport from './pages/Transport';
 import Canteen from './pages/Canteen';
 import Settings from './pages/Settings';
 import AdminManage from './pages/AdminManage';
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/exam-fee" element={<PrivateRoute><ExamFee /></PrivateRoute>} />
           <Route path="/add-money" element={<PrivateRoute><AddMoney /></PrivateRoute>} />
           <Route path="/event-fee" element={<PrivateRoute><EventFee /></PrivateRoute>} />
+          <Route path="/transport" element={<PrivateRoute><Transport /></PrivateRoute>} />
           <Route path="/canteen" element={<PrivateRoute><Canteen /></PrivateRoute>} />
           <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
           <Route path="/admin-manage" element={<PrivateRoute><AdminManage /></PrivateRoute>} />
