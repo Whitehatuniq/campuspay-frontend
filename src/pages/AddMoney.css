@@ -1,0 +1,401 @@
+.addmoney-page {
+  min-height: 100vh;
+  background: #0a0f1e;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+.addmoney-card {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 24px;
+  padding: 28px;
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Header */
+.addmoney-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.back-btn {
+  background: #1e293b;
+  border: none;
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.back-btn:hover { background: #334155; color: #f1f5f9; }
+
+.addmoney-header-text {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.addmoney-icon-wrap {
+  width: 44px;
+  height: 44px;
+  background: #0c2744;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.addmoney-header-text h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 2px;
+}
+
+.addmoney-header-text p {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Amount input */
+.amount-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 24px;
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.amount-currency {
+  font-size: 32px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.amount-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 48px;
+  font-weight: 800;
+  color: #f1f5f9;
+  width: 200px;
+  text-align: center;
+}
+
+.amount-input::placeholder { color: #334155; }
+.amount-input::-webkit-outer-spin-button,
+.amount-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+/* Quick amounts */
+.quick-amounts-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.quick-amounts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.quick-amt-btn {
+  padding: 11px 8px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quick-amt-btn:hover { background: #253348; color: #f1f5f9; }
+.quick-amt-btn.active { background: #0c2744; border-color: #38bdf8; color: #38bdf8; }
+
+/* Proceed button */
+.proceed-btn {
+  width: 100%;
+  padding: 14px;
+  background: #38bdf8;
+  border: none;
+  border-radius: 12px;
+  color: #0a0f1e;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.proceed-btn:hover { background: #7dd3fc; }
+.proceed-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Method selection */
+.method-section { }
+
+.amount-summary {
+  text-align: center;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 24px;
+  padding: 12px;
+  background: #1e293b;
+  border-radius: 10px;
+}
+
+.amount-summary strong { color: #38bdf8; font-size: 16px; }
+
+.method-group-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+/* UPI Apps Grid */
+.upi-apps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.upi-app-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--app-bg);
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.upi-app-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px var(--app-border);
+}
+
+.upi-app-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.upi-app-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+/* Divider */
+.method-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  color: #475569;
+  font-size: 12px;
+}
+
+.method-divider::before,
+.method-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #1e293b;
+}
+
+/* Other methods */
+.other-methods { display: flex; flex-direction: column; gap: 8px; }
+
+.other-method-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #0a0f1e;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.other-method-btn:hover { border-color: #334155; background: #1e293b22; }
+.other-method-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.other-method-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.other-method-info { flex: 1; }
+.other-method-name { display: block; font-size: 14px; font-weight: 600; color: #e2e8f0; }
+.other-method-sub { display: block; font-size: 12px; color: #64748b; margin-top: 2px; }
+
+/* UPI Confirm */
+.upi-confirm-section {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.upi-confirm-icon {
+  width: 80px;
+  height: 80px;
+  background: #0c2744;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 0 #38bdf822; }
+  50% { box-shadow: 0 0 0 16px #38bdf800; }
+}
+
+.upi-confirm-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 8px;
+}
+
+.upi-confirm-section p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0 0 12px;
+}
+
+.upi-confirm-section p strong { color: #38bdf8; font-size: 20px; }
+
+.upi-id-display {
+  display: inline-block;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 16px;
+  font-family: monospace;
+}
+
+.upi-note {
+  font-size: 12px;
+  color: #475569;
+  margin-bottom: 20px !important;
+}
+
+.cancel-link {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 12px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 8px;
+  transition: color 0.2s;
+}
+
+.cancel-link:hover { color: #94a3b8; }
+
+/* Status messages */
+.status-msg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-top: 14px;
+}
+
+.status-msg.error { background: #2d0a0a; border: 1px solid #ef444444; color: #ef4444; }
+.status-msg.success { background: #0d2b1a; border: 1px solid #22c55e44; color: #22c55e; }
+
+/* Success */
+.success-section {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.success-icon {
+  margin: 0 auto 20px;
+  animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pop {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.success-section h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 8px;
+}
+
+.success-amount {
+  font-size: 42px;
+  font-weight: 800;
+  color: #22c55e;
+  margin-bottom: 8px;
+}
+
+.success-section p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0 0 24px;
+}
+
+@media (max-width: 480px) {
+  .addmoney-page { padding: 16px 12px; }
+  .addmoney-card { padding: 20px 16px; }
+  .amount-input { font-size: 36px; width: 160px; }
+  .upi-apps-grid { grid-template-columns: 1fr 1fr; }
+}
