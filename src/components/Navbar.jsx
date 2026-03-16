@@ -23,10 +23,6 @@ export default function Navbar() {
         <Link to="/dashboard"    className={isActive('/dashboard')}>Dashboard</Link>
         <Link to="/pay"          className={isActive('/pay')}>Pay</Link>
         <Link to="/transactions" className={isActive('/transactions')}>History</Link>
-        <Link to="/exam-fee"     className={isActive('/exam-fee')}>Fees</Link>
-        <Link to="/event-fee"    className={isActive('/event-fee')}>Events</Link>
-        <Link to="/transport" className={isActive("/transport")}>🚌 Transport</Link>
-        <Link to="/canteen"      className={isActive('/canteen')}>🍽️ Canteen</Link>
         <Link to="/qr-scanner"   className={isActive('/qr-scanner')}>📷 Scan QR</Link>
         <Link to="/statement"    className={isActive('/statement')}>📄 Statement</Link>
         <Link to="/settings"     className={isActive('/settings')}>⚙️ Settings</Link>

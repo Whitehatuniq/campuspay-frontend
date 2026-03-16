@@ -30,9 +30,9 @@ export default function App() {
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/pay" element={<PrivateRoute><Pay /></PrivateRoute>} />
           <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
-          <Route path="/exam-fee" element={<PrivateRoute><ExamFee /></PrivateRoute>} />
+          <Route path="/campus-fee" element={<PrivateRoute><ExamFee /></PrivateRoute>} />
           <Route path="/add-money" element={<PrivateRoute><AddMoney /></PrivateRoute>} />
-          <Route path="/event-fee" element={<PrivateRoute><EventFee /></PrivateRoute>} />
+          <Route path="/events" element={<PrivateRoute><EventFee /></PrivateRoute>} />
           <Route path="/transport" element={<PrivateRoute><Transport /></PrivateRoute>} />
           <Route path="/canteen" element={<PrivateRoute><Canteen /></PrivateRoute>} />
           <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
