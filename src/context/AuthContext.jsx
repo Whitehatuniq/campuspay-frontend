@@ -8,10 +8,14 @@ export function AuthProvider({ children }) {
     return stored ? JSON.parse(stored) : null;
   });
 
-  const login = (userData, token) => {
-    localStorage.setItem('token', token);
+  const login = async (email, password) => {
+    const API = (await import('../api/axios')).default;
+    const res = await API.post('/api/auth/login', { email, password });
+    const { access_token, ...userData } = res.data;
+    localStorage.setItem('token', access_token);
     localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
+    return res.data;
   };
 
   const logout = () => {
