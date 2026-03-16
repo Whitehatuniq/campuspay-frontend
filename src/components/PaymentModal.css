@@ -1,0 +1,194 @@
+.pm-overlay {
+  position: fixed;
+  inset: 0;
+  background: #00000088;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 200;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.pm-sheet {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 24px 24px 0 0;
+  padding: 12px 24px 32px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 92vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.pm-handle {
+  width: 40px; height: 4px;
+  background: #334155;
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+
+.pm-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: #1e293b;
+  border: none;
+  border-radius: 50%;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pm-close:hover { background: #334155; color: #f1f5f9; }
+
+/* Header */
+.pm-header { text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid #1e293b; }
+.pm-title { font-size: 16px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+.pm-desc { font-size: 13px; color: #64748b; margin-bottom: 12px; }
+.pm-amount { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin-bottom: 6px; }
+.pm-to { font-size: 12px; color: #475569; }
+.pm-to span { color: #94a3b8; font-weight: 500; }
+
+/* Options */
+.pm-option-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600; color: #64748b;
+  text-transform: uppercase; letter-spacing: 0.6px;
+  margin-bottom: 10px;
+}
+
+.pm-option-block { margin-bottom: 16px; }
+
+/* Wallet box */
+.pm-wallet-box {
+  background: #0a0f1e;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.pm-wallet-box.insufficient { border-color: #ef444433; }
+
+.pm-wallet-balance {
+  display: flex; justify-content: space-between;
+  font-size: 13px; color: #64748b;
+  margin-bottom: 14px;
+}
+
+.pm-pin-input {
+  width: 100%; background: #1e293b;
+  border: 1px solid #334155; border-radius: 10px;
+  padding: 11px 16px; color: #f1f5f9;
+  font-size: 22px; letter-spacing: 10px;
+  text-align: center; outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+.pm-pin-input:focus { border-color: var(--accent); }
+
+.pm-insufficient { font-size: 12px; color: #ef4444; text-align: center; padding: 4px 0; }
+
+/* Pay button */
+.pm-pay-btn {
+  width: 100%; padding: 13px;
+  border: none; border-radius: 12px;
+  color: #0a0f1e; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.pm-pay-btn:hover { filter: brightness(1.1); }
+.pm-pay-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.wallet-btn { color: #0a0f1e !important; }
+
+/* Divider */
+.pm-divider {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 11px; color: #475569;
+  margin: 4px 0 16px;
+}
+.pm-divider::before, .pm-divider::after { content: ''; flex: 1; height: 1px; background: #1e293b; }
+
+/* UPI grid */
+.pm-upi-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+}
+
+.pm-upi-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  background: var(--bg); border: 1px solid var(--bd);
+  border-radius: 12px; cursor: pointer;
+  transition: all 0.2s;
+}
+.pm-upi-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--bd); }
+.pm-upi-btn img { width: 28px; height: 28px; object-fit: contain; border-radius: 6px; }
+.pm-upi-btn span { font-size: 12px; font-weight: 600; color: #e2e8f0; }
+
+/* Razorpay button */
+.pm-razorpay-btn {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px;
+  background: #0a0f1e; border: 1px solid #1e293b;
+  border-radius: 14px; cursor: pointer;
+  transition: all 0.2s; margin-top: 8px;
+}
+.pm-razorpay-btn:hover { border-color: #334155; background: #1e293b22; }
+.pm-razorpay-left { display: flex; align-items: center; gap: 12px; }
+.pm-razorpay-name { display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; text-align: left; }
+.pm-razorpay-sub { display: block; font-size: 11px; color: #64748b; margin-top: 1px; }
+
+/* Center steps */
+.pm-center-step {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 20px 0 8px; gap: 10px;
+}
+.pm-center-step h3 { font-size: 18px; font-weight: 700; color: #f1f5f9; margin: 0; }
+.pm-center-step p { font-size: 13px; color: #64748b; margin: 0; }
+.pm-center-step p strong { font-size: 20px; }
+
+.pm-app-icon {
+  width: 72px; height: 72px; border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 8px;
+}
+
+.pm-upi-id {
+  background: #1e293b; border: 1px solid #334155;
+  border-radius: 8px; padding: 8px 18px;
+  font-size: 13px; font-weight: 600; color: #94a3b8;
+  font-family: monospace;
+}
+
+.pm-hint { font-size: 12px; color: #475569 !important; }
+
+.pm-link-btn {
+  background: none; border: none; color: #64748b;
+  font-size: 13px; cursor: pointer; margin-top: 4px;
+  transition: color 0.2s; padding: 6px;
+}
+.pm-link-btn:hover { color: #94a3b8; }
+
+.pm-spinner {
+  width: 48px; height: 48px;
+  border: 4px solid #1e293b;
+  border-top-color: var(--accent, #38bdf8);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.pm-success-icon, .pm-error-icon { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.pm-success-amount { font-size: 36px; font-weight: 800; color: #22c55e; }
+.pm-err-msg { color: #ef4444; font-size: 13px; max-width: 280px; }

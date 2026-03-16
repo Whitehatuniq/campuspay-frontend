@@ -1,92 +1,125 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Send, User, ChevronRight, Clock, Wallet } from 'lucide-react';
 import API from '../api/axios';
+import PaymentModal from '../components/PaymentModal';
 import './Pay.css';
 
-const PAYMENT_TYPES = [
-  { value: 'exam_fee',     label: 'Exam Fee' },
-  { value: 'back_fee',     label: 'Back Fee' },
-  { value: 'event_fee',    label: 'Event Fee' },
-  { value: 'canteen',      label: 'Canteen' },
-  { value: 'library_fine', label: 'Library Fine' },
-  { value: 'other',        label: 'Other' },
+const RECENT_CONTACTS = [
+  { name: 'Arjun Sharma',  upi: 'arjun164f@campuspay', initial: 'A', color: '#38bdf8' },
+  { name: 'Priya Patel',   upi: 'priyabe9a@campuspay', initial: 'P', color: '#a78bfa' },
+  { name: 'Rahul Verma',   upi: 'rahul0c33@campuspay', initial: 'R', color: '#34d399' },
+  { name: 'Sneha Gupta',   upi: 'sneha244d@campuspay', initial: 'S', color: '#fb923c' },
 ];
 
 export default function Pay() {
-  const [form, setForm] = useState({
-    receiver_upi: '', amount: '', payment_type: 'other',
-    description: '', upi_pin: ''
-  });
-  const [status, setStatus] = useState(null); // { type: 'success'|'error', msg, txn_id }
-  const [loading, setLoading] = useState(false);
+  const [upiId, setUpiId]     = useState('');
+  const [amount, setAmount]   = useState('');
+  const [note, setNote]       = useState('');
+  const [balance, setBalance] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [error, setError]     = useState('');
 
-  const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
+  useEffect(() => {
+    API.get('/api/wallet/balance').then(r => setBalance(r.data.balance || 0)).catch(() => {});
+  }, []);
 
-  const handlePay = async (e) => {
+  const handleProceed = (e) => {
     e.preventDefault();
-    setStatus(null);
-    setLoading(true);
-    try {
-      const res = await API.post('/api/payment/pay', {
-        ...form,
-        amount: parseFloat(form.amount),
-      });
-      setStatus({ type: 'success', msg: res.data.message, txn_id: res.data.transaction_id });
-      setForm({ receiver_upi: '', amount: '', payment_type: 'other', description: '', upi_pin: '' });
-    } catch (err) {
-      setStatus({ type: 'error', msg: err.response?.data?.detail || 'Payment failed.' });
-    } finally {
-      setLoading(false);
-    }
+    if (!upiId.trim()) { setError('Enter a UPI ID'); return; }
+    if (!amount || parseFloat(amount) <= 0) { setError('Enter a valid amount'); return; }
+    setError('');
+    setModalOpen(true);
   };
 
   return (
     <div className="pay-page">
-      <div className="pay-card">
-        <h2>Send Money</h2>
-        <p className="pay-sub">Transfer via UPI ID</p>
+      <div className="pay-container">
 
-        {status && (
-          <div className={`pay-status ${status.type}`}>
-            {status.type === 'success' ? '✅' : '❌'} {status.msg}
-            {status.txn_id && <div className="txn-id">TXN: {status.txn_id.slice(0, 16)}...</div>}
+        {/* Header */}
+        <div className="page-hero" style={{ '--accent': '#38bdf8' }}>
+          <div className="page-hero-icon"><Send size={28} color="#38bdf8" strokeWidth={1.8} /></div>
+          <div>
+            <h1>Send Money</h1>
+            <p>Transfer to any CampusPay UPI ID</p>
           </div>
-        )}
-
-        <form onSubmit={handlePay} className="pay-form">
-          <div className="form-group">
-            <label>Receiver UPI ID</label>
-            <input type="text" placeholder="name1234@campuspay" value={form.receiver_upi} onChange={set('receiver_upi')} required />
+          <div className="page-hero-balance">
+            <Wallet size={13} color="#64748b" />
+            <span>₹{balance.toLocaleString('en-IN')}</span>
           </div>
+        </div>
 
-          <div className="form-group">
-            <label>Amount (₹)</label>
-            <input type="number" placeholder="0.00" min="1" step="0.01" value={form.amount} onChange={set('amount')} required />
-          </div>
+        {/* Recent contacts */}
+        <div className="section-label">Recent</div>
+        <div className="contacts-row">
+          {RECENT_CONTACTS.map(c => (
+            <button key={c.upi} className="contact-btn" onClick={() => setUpiId(c.upi)}>
+              <div className="contact-avatar" style={{ background: c.color + '22', color: c.color, border: `1px solid ${c.color}44` }}>{c.initial}</div>
+              <span className="contact-name">{c.name.split(' ')[0]}</span>
+            </button>
+          ))}
+        </div>
 
-          <div className="form-group">
-            <label>Payment Type</label>
-            <select value={form.payment_type} onChange={set('payment_type')}>
-              {PAYMENT_TYPES.map(t => (
-                <option key={t.value} value={t.value}>{t.label}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label>Description (optional)</label>
-            <input type="text" placeholder="What's this for?" value={form.description} onChange={set('description')} />
-          </div>
-
-          <div className="form-group">
-            <label>UPI PIN</label>
-            <input type="password" placeholder="4-6 digit PIN" maxLength={6} value={form.upi_pin} onChange={set('upi_pin')} required />
+        {/* Form */}
+        <form onSubmit={handleProceed} className="pay-form">
+          <div className="form-field">
+            <label><User size={13} /> Recipient UPI ID</label>
+            <input
+              type="text"
+              placeholder="e.g. arjun164f@campuspay"
+              value={upiId}
+              onChange={e => setUpiId(e.target.value)}
+              className="field-input"
+            />
           </div>
 
-          <button type="submit" className="pay-btn" disabled={loading}>
-            {loading ? 'Processing...' : `Pay ₹${form.amount || '0'}`}
+          <div className="form-field">
+            <label>Amount</label>
+            <div className="amount-field">
+              <span className="currency-sign">₹</span>
+              <input
+                type="number"
+                placeholder="0"
+                min="1"
+                value={amount}
+                onChange={e => setAmount(e.target.value)}
+                className="amount-field-input"
+              />
+            </div>
+          </div>
+
+          <div className="form-field">
+            <label>Note (optional)</label>
+            <input
+              type="text"
+              placeholder="What's this for?"
+              value={note}
+              onChange={e => setNote(e.target.value)}
+              className="field-input"
+            />
+          </div>
+
+          {error && <div className="field-error">{error}</div>}
+
+          <button type="submit" className="proceed-btn" style={{ background: '#38bdf8' }} disabled={!upiId || !amount}>
+            Proceed to Pay {amount ? `₹${parseFloat(amount).toLocaleString('en-IN')}` : ''}
+            <ChevronRight size={18} />
           </button>
         </form>
       </div>
+
+      <PaymentModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        amount={parseFloat(amount) || 0}
+        title="Send Money"
+        description={`To: ${upiId}${note ? ` · ${note}` : ''}`}
+        toUpi={upiId}
+        accentColor="#38bdf8"
+        walletBalance={balance}
+        apiEndpoint="/api/payment/send"
+        apiPayload={{ receiver_upi: upiId, note }}
+        onSuccess={() => { setUpiId(''); setAmount(''); setNote(''); setBalance(b => b - parseFloat(amount)); }}
+      />
     </div>
   );
 }
