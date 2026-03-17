@@ -29,8 +29,8 @@ export default function Dashboard() {
       setBalance(walletRes.data.balance || 0);
       setTransactions(txRes.data.transactions || []);
 
-      const spent    = (txRes.data.transactions || []).filter(t => t.type === 'debit').reduce((s, t) => s + t.amount, 0);
-      const received = (txRes.data.transactions || []).filter(t => t.type === 'credit').reduce((s, t) => s + t.amount, 0);
+      const spent    = (txRes.data.transactions || []).filter(t => t.direction === 'debit').reduce((s, t) => s + t.amount, 0);
+      const received = (txRes.data.transactions || []).filter(t => t.direction === 'credit').reduce((s, t) => s + t.amount, 0);
       setSummary({ spent, received });
     } catch (e) {
       console.error(e);
@@ -125,11 +125,11 @@ export default function Dashboard() {
                 {txIcon(tx.type)}
               </div>
               <div className="tx-info">
-                <div className="tx-desc">{tx.description || tx.type}</div>
+                <div className="tx-desc">{tx.description || (tx.direction === 'credit' ? 'Money Received' : 'Money Sent')}</div>
                 <div className="tx-date">{new Date(tx.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
               </div>
               <div className={`tx-amount ${tx.type}`}>
-                {tx.type === 'credit' ? '+' : '-'}₹{tx.amount.toLocaleString()}
+                {tx.direction === 'credit' ? '+' : '-'}₹{tx.amount.toLocaleString()}
               </div>
             </div>
           ))}
