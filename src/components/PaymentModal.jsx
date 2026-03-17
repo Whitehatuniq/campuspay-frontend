@@ -26,6 +26,7 @@ export default function PaymentModal({
 }) {
   const receiverUpi  = toUpi || UNIVERSITY_UPI;
   const [step, setStep]           = useState('choose');
+  const [paidAmount, setPaidAmount] = useState(0);
   const [pin, setPin]             = useState('');
   const [errMsg, setErrMsg]       = useState('');
   const [copied, setCopied]       = useState(false);
@@ -57,6 +58,7 @@ export default function PaymentModal({
     setStep('processing');
     try {
       await API.post(apiEndpoint, { ...apiPayload, amount, upi_pin: pin });
+      setPaidAmount(amount);
       setStep('success');
       onSuccess?.('wallet');
     } catch (e) {
@@ -70,6 +72,7 @@ export default function PaymentModal({
     setStep('processing');
     try {
       await API.post(apiEndpoint, { ...apiPayload, amount, upi_pin: '0000' });
+      setPaidAmount(amount);
       setStep('success');
       onSuccess?.('upi_qr');
     } catch (e) {
@@ -86,6 +89,7 @@ export default function PaymentModal({
       onSuccess: async () => {
         try {
           await API.post(apiEndpoint, { ...apiPayload, amount, upi_pin: '0000' });
+          setPaidAmount(amount);
           setStep('success');
           onSuccess?.('razorpay');
         } catch {
@@ -265,7 +269,7 @@ export default function PaymentModal({
           <div className="pm-center-step">
             <div className="pm-success-icon"><CheckCircle size={60} color="#22c55e" /></div>
             <h3>Payment Successful!</h3>
-            <div className="pm-success-amount">₹{parseFloat(amount || 0).toLocaleString('en-IN')}</div>
+            <div className="pm-success-amount">₹{parseFloat(paidAmount || amount || 0).toLocaleString('en-IN')}</div>
             <p className="pm-success-desc">{description}</p>
             <button className="pm-pay-btn" style={{ background: '#22c55e', color: '#0a0f1e' }} onClick={handleClose}>
               Done
