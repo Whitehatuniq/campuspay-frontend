@@ -25,7 +25,7 @@ export default function PaymentModal({
   apiPayload = {},
 }) {
   const receiverUpi  = toUpi || UNIVERSITY_UPI;
-  const numAmount = numAmount || 0;
+  const numAmount = parseFloat(amount) || 0;
   const [step, setStep]           = useState('choose');
   const [paidAmount, setPaidAmount] = useState(0);
   const [pin, setPin]             = useState('');
