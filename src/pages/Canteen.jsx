@@ -202,11 +202,11 @@ export default function Canteen() {
         amount={cartTotal}
         title={`Order — ${selected?.name}`}
         description={cartItems.map(i => `${i.name} ×${cart[i.item_id]}`).join(', ')}
-        toUpi='9667295900-3@ybl'
+        toUpi={selected?.canteen_id === 'pu_canteen' ? 'pu.canteen@campuspay' : selected?.canteen_id === 'cybrus_cafe' ? 'cybrus.cafe@campuspay' : 'cafegram@campuspay'}
         accentColor={accent}
         walletBalance={balance}
         apiEndpoint="/api/payment/pay"
-        apiPayload={{ receiver_upi: '9667295900-3@ybl', payment_type: 'canteen', description: 'Canteen Order' }}
+        apiPayload={{ receiver_upi: selected?.canteen_id === 'pu_canteen' ? 'pu.canteen@campuspay' : selected?.canteen_id === 'cybrus_cafe' ? 'cybrus.cafe@campuspay' : 'cafegram@campuspay', payment_type: 'canteen', description: 'Canteen Order - ' + selected?.name }}
         onSuccess={async () => {
           try {
             await API.post('/api/canteen/order', {
