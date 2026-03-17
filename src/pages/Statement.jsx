@@ -134,10 +134,10 @@ export default function Statement() {
               <tr>
                 <td>${i + 1}</td>
                 <td>${new Date(t.timestamp).toLocaleString('en-IN')}</td>
-                <td>${t.direction === "credit" ? "Money Received" : (t.description || "Money Sent")}</td>
-                <td>${t.direction === "credit" ? "Received" : (TYPE_LABELS[t.payment_type] || t.payment_type)}</td>
+                <td>${t.direction === "credit" ? "Money Received" : t.direction === "debit" ? "Money Sent" : t.description}</td>
+                <td>${t.direction === "credit" ? "Received" : "Sent"}</td>
                 <td class="${t.direction === 'debit' ? 'debit-row' : 'credit-row'}">
-                  ${t.direction === 'debit' ? '-' : '+'}₹${t.amount?.toFixed(2)}
+                  ${t.direction === "credit" ? "+" : "-"}₹${t.amount?.toFixed(2)}
                 </td>
               </tr>
             `).join('')}
@@ -239,7 +239,7 @@ export default function Statement() {
                   <td>{t.description || t.payment_type}</td>
                   <td><span className="type-badge">{TYPE_LABELS[t.payment_type] || t.payment_type}</span></td>
                   <td className={t.direction === 'debit' ? 'debit' : 'credit'}>
-                    {t.direction === 'debit' ? '-' : '+'}₹{t.amount?.toFixed(2)}
+                    {t.direction === 'credit' ? '+' : '-'}₹{t.amount?.toFixed(2)}
                   </td>
                 </tr>
               ))}
