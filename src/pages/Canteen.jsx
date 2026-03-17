@@ -211,7 +211,7 @@ export default function Canteen() {
           try {
             await API.post('/api/canteen/order', {
               canteen_id: selected?.canteen_id,
-              items: cartItems.map(i => ({ item_id: i.item_id, qty: cart[i.item_id] })),
+              items: cartItems.map(i => ({ item_id: i.item_id, qty: cart[i.item_id], name: i.name, price: i.price, emoji: i.emoji || "🍽️", subtotal: i.price * cart[i.item_id] })),
               amount: cartTotal,
             });
           } catch(e) {}
