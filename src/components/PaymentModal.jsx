@@ -4,7 +4,7 @@ import API from '../api/axios';
 import useRazorpay from '../hooks/useRazorpay';
 import './PaymentModal.css';
 
-const UNIVERSITY_UPI = '9667295900-3@ybl';
+const UNIVERSITY_UPI = 'poornima.university@campuspay';
 const UNIVERSITY_NAME = 'Poornima University';
 
 // UPI app logos for display only
@@ -24,7 +24,7 @@ export default function PaymentModal({
   apiEndpoint,
   apiPayload = {},
 }) {
-  const receiverUpi  = toUpi || UNIVERSITY_UPI;
+  const receiverUpi  = apiPayload?.receiver_upi || toUpi || UNIVERSITY_UPI;
   const numAmount = parseFloat(amount) || 0;
   const [step, setStep]           = useState('choose');
   const [paidAmount, setPaidAmount] = useState(0);
