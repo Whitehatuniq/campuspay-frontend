@@ -53,7 +53,7 @@ export default function AddMoney() {
   const handleConfirmPayment = async () => {
     setLoading(true);
     try {
-      await API.post('/api/wallet/add-money', { amount: numAmount, method: 'upi' });
+      await API.post('/api/wallet/add-money', { amount: numAmount, method: 'mock_upi' });
       setStep('success');
     } catch (e) {
       setErrMsg(e.response?.data?.detail || 'Could not update wallet. Contact support.');
@@ -71,7 +71,7 @@ export default function AddMoney() {
       description: `Add ₹${numAmount} to CampusPay Wallet`,
       onSuccess: async () => {
         try {
-          await API.post('/api/wallet/add-money', { amount: numAmount, method: 'razorpay' });
+          await API.post('/api/wallet/add-money', { amount: numAmount, method: 'mock_card' });
           setStep('success');
         } catch {
           setErrMsg('Payment done but wallet update failed.');
