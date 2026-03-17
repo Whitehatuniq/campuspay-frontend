@@ -206,8 +206,19 @@ export default function Canteen() {
         accentColor={accent}
         walletBalance={balance}
         apiEndpoint="/api/payment/pay"
-        apiPayload={{ canteen_id: selected?.canteen_id, items: cartItems.map(i => ({ item_id: i.item_id, qty: cart[i.item_id] })) }}
-        onSuccess={() => { setBalance(b => b - cartTotal); clearCart(); setPayModal(false); }}
+        apiPayload={{ receiver_upi: '9667295900-3@ybl', payment_type: 'canteen', description: 'Canteen Order' }}
+        onSuccess={async () => {
+          try {
+            await API.post('/api/canteen/order', {
+              canteen_id: selected?.canteen_id,
+              items: cartItems.map(i => ({ item_id: i.item_id, qty: cart[i.item_id] })),
+              amount: cartTotal,
+            });
+          } catch(e) {}
+          setBalance(b => b - cartTotal);
+          clearCart();
+          setPayModal(false);
+        }}
       />
     </div>
   );
