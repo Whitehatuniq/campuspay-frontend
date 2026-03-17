@@ -31,7 +31,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="/dashboard" element={<PrivateRoute canteenRedirect><Dashboard /></PrivateRoute>} />
           <Route path="/pay" element={<PrivateRoute><Pay /></PrivateRoute>} />
           <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
           <Route path="/campus-fee" element={<PrivateRoute><ExamFee /></PrivateRoute>} />
