@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
     const { access_token, ...userData } = res.data;
     // Decode JWT to get name and email
     const payload = JSON.parse(atob(access_token.split('.')[1]));
-    const fullUser = { ...userData, name: payload.name, email: payload.email };
+    const fullUser = { ...userData, name: payload.name, email: payload.email, role: payload.role, canteen_id: payload.canteen_id, canteen_name: payload.canteen_name };
     localStorage.setItem('token', access_token);
     localStorage.setItem('user', JSON.stringify(fullUser));
     setUser(fullUser);
