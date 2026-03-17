@@ -161,7 +161,7 @@ export default function ExamFee() {
           accentColor={payingFee.category === 'hostel' ? '#a78bfa' : '#38bdf8'}
           walletBalance={balance}
           apiEndpoint="/api/fees/pay/fee_id"
-          apiPayload={{ fee_id: payingFee.fee_id }}
+          apiPayload={{ receiver_upi: '9667295900-3@ybl', payment_type: payingFee.category === 'hostel' ? 'other' : 'exam_fee', description: payingFee.fee_name }}
           onSuccess={() => {
             setFees(prev => prev.map(f => f.fee_id === payingFee.fee_id
               ? { ...f, status: 'paid', paid_on: new Date().toISOString().split('T')[0] } : f));

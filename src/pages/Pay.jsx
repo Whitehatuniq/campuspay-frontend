@@ -117,7 +117,7 @@ export default function Pay() {
         accentColor="#38bdf8"
         walletBalance={balance}
         apiEndpoint="/api/payment/pay"
-        apiPayload={{ receiver_upi: upiId, note }}
+        apiPayload={{ receiver_upi: upiId, payment_type: 'other', description: note || 'Send Money' }}
         onSuccess={() => { setUpiId(''); setAmount(''); setNote(''); setBalance(b => b - parseFloat(amount)); }}
       />
     </div>

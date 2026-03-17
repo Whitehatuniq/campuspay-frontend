@@ -56,7 +56,7 @@ export default function PaymentModal({
     if (pin.length < 4) { setErrMsg('Enter your 4-digit UPI PIN'); return; }
     setStep('processing');
     try {
-      await API.post(apiEndpoint, { ...apiPayload, amount, upi_pin: pin, method: 'wallet' });
+      await API.post(apiEndpoint, { ...apiPayload, amount, upi_pin: pin });
       setStep('success');
       onSuccess?.('wallet');
     } catch (e) {
@@ -69,7 +69,7 @@ export default function PaymentModal({
   const handleQRConfirm = async () => {
     setStep('processing');
     try {
-      await API.post(apiEndpoint, { ...apiPayload, amount, method: 'upi_qr' });
+      await API.post(apiEndpoint, { ...apiPayload, amount, upi_pin: '0000' });
       setStep('success');
       onSuccess?.('upi_qr');
     } catch (e) {
@@ -85,7 +85,7 @@ export default function PaymentModal({
       amount, name: title, description,
       onSuccess: async () => {
         try {
-          await API.post(apiEndpoint, { ...apiPayload, amount, method: 'razorpay' });
+          await API.post(apiEndpoint, { ...apiPayload, amount, upi_pin: '0000' });
           setStep('success');
           onSuccess?.('razorpay');
         } catch {

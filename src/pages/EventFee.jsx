@@ -208,8 +208,8 @@ export default function EventFee() {
         toUpi={registering?.receiver_upi || UNIVERSITY_UPI}
         accentColor={registering?.color || '#34d399'}
         walletBalance={balance}
-        apiEndpoint="/api/events/register"
-        apiPayload={{ event_id: registering?.event_id, ...form }}
+        apiEndpoint="/api/payment/pay"
+        apiPayload={{ receiver_upi: '9667295900-3@ybl', payment_type: 'event_fee', description: registering?.name || registering?.event_name || 'Event Fee' }}
         onSuccess={() => {
           setBalance(b => b - (registering?.fee || 0));
           setEvents(prev => prev.map(e => e.event_id === registering?.event_id ? { ...e, seats_left: Math.max(0, (e.seats_left ?? 1) - 1) } : e));

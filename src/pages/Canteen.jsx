@@ -205,7 +205,7 @@ export default function Canteen() {
         toUpi='9667295900-3@ybl'
         accentColor={accent}
         walletBalance={balance}
-        apiEndpoint="/api/canteen/order"
+        apiEndpoint="/api/payment/pay"
         apiPayload={{ canteen_id: selected?.canteen_id, items: cartItems.map(i => ({ item_id: i.item_id, qty: cart[i.item_id] })) }}
         onSuccess={() => { setBalance(b => b - cartTotal); clearCart(); setPayModal(false); }}
       />
