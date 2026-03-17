@@ -25,6 +25,7 @@ export default function PaymentModal({
   apiPayload = {},
 }) {
   const receiverUpi  = toUpi || UNIVERSITY_UPI;
+  const numAmount = numAmount || 0;
   const [step, setStep]           = useState('choose');
   const [paidAmount, setPaidAmount] = useState(0);
   const [pin, setPin]             = useState('');
@@ -37,8 +38,8 @@ export default function PaymentModal({
 
   const reset      = () => { setStep('choose'); setPin(''); setErrMsg(''); setCopied(false); setQrLoaded(false); };
   const handleClose = () => { reset(); onClose(); };
-  const canPayWallet = walletBalance >= amount;
-  const amtStr = parseFloat(amount || 0).toFixed(2);
+  const canPayWallet = walletBalance >= numAmount;
+  const amtStr = numAmount.toFixed(2);
 
   // UPI string used for QR — standard format
   const upiString = `upi://pay?pa=${encodeURIComponent(receiverUpi)}&pn=${encodeURIComponent(UNIVERSITY_NAME)}&am=${amtStr}&cu=INR&tn=${encodeURIComponent(description || title || 'CampusPay')}`;
@@ -57,8 +58,8 @@ export default function PaymentModal({
     if (pin.length < 4) { setErrMsg('Enter your 4-digit UPI PIN'); return; }
     setStep('processing');
     try {
-      await API.post(apiEndpoint, { ...apiPayload, amount, upi_pin: pin });
-      setPaidAmount(amount);
+      await API.post(apiEndpoint, { ...apiPayload, amount: numAmount, upi_pin: pin });
+      setPaidAmount(numAmount);
       setStep('success');
       onSuccess?.('wallet');
     } catch (e) {
@@ -71,7 +72,7 @@ export default function PaymentModal({
   const handleQRConfirm = async () => {
     setStep('processing');
     try {
-      await API.post(apiEndpoint, { ...apiPayload, amount, upi_pin: '0000' });
+      await API.post(apiEndpoint, { ...apiPayload, amount: numAmount, upi_pin: '0000' });
       setPaidAmount(amount);
       setStep('success');
       onSuccess?.('upi_qr');
@@ -88,7 +89,7 @@ export default function PaymentModal({
       amount, name: title, description,
       onSuccess: async () => {
         try {
-          await API.post(apiEndpoint, { ...apiPayload, amount, upi_pin: '0000' });
+          await API.post(apiEndpoint, { ...apiPayload, amount: numAmount, upi_pin: '0000' });
           setPaidAmount(amount);
           setStep('success');
           onSuccess?.('razorpay');
@@ -114,7 +115,7 @@ export default function PaymentModal({
               <div className="pm-title">{title}</div>
               <div className="pm-desc">{description}</div>
               <div className="pm-amount" style={{ color: accentColor }}>
-                ₹{parseFloat(amount || 0).toLocaleString('en-IN')}
+                ₹{numAmount.toLocaleString('en-IN')}
               </div>
             </div>
 
@@ -142,7 +143,7 @@ export default function PaymentModal({
                       style={{ background: accentColor }}
                       onClick={handleWalletPay}
                       disabled={pin.length < 4}>
-                      Pay ₹{parseFloat(amount || 0).toLocaleString('en-IN')} from Wallet
+                      Pay ₹{numAmount.toLocaleString('en-IN')} from Wallet
                     </button>
                   </>
                 ) : (
@@ -220,7 +221,7 @@ export default function PaymentModal({
               </div>
 
               <div className="pm-qr-amount" style={{ color: accentColor }}>
-                ₹{parseFloat(amount || 0).toLocaleString('en-IN')}
+                ₹{numAmount.toLocaleString('en-IN')}
               </div>
 
               <div className="pm-qr-to">
