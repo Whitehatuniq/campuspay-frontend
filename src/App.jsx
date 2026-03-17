@@ -12,6 +12,7 @@ import ExamFee from './pages/ExamFee';
 import AddMoney from './pages/AddMoney';
 import EventFee from './pages/EventFee';
 import Transport from './pages/Transport';
+import CanteenPanel from './pages/CanteenPanel';
 import Canteen from './pages/Canteen';
 import Settings from './pages/Settings';
 import AdminManage from './pages/AdminManage';
@@ -26,6 +27,7 @@ export default function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
+          <Route path="/canteen-panel" element={<CanteenPanel />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/register" element={<Register />} />

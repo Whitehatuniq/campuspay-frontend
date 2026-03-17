@@ -4,6 +4,7 @@ import {
   LayoutDashboard, Send, ClipboardList, FileText,
   Settings, ShieldCheck, LogOut, Bus
 } from 'lucide-react';
+import NotificationBell from './NotificationBell';
 import logo from '../campuspay_logo.png';
 import './Navbar.css';
 
@@ -52,6 +53,7 @@ export default function Navbar() {
       </div>
 
       <div className="navbar-user">
+        {user?.role === 'student' && <NotificationBell />}
         <span className="user-name">{user?.name || 'Student'}</span>
         <button className="logout-btn" onClick={handleLogout}>
           <LogOut size={14} strokeWidth={2} />
