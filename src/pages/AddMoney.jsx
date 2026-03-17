@@ -224,7 +224,7 @@ export default function AddMoney() {
               <Scan size={20} color="#34d399" />
               <div>
                 <span className="am-scanner-title">Scan UPI QR Code</span>
-                <span className="am-scanner-sub">Use camera to scan any UPI QR</span>
+                <span className="am-scanner-sub">Use camera to scan any UPI QR code</span>
               </div>
               <ChevronRight size={16} color="#64748b" />
             </button>
@@ -233,6 +233,20 @@ export default function AddMoney() {
             <button className="am-showqr-btn" onClick={() => { setQrLoaded(false); setStep('qr'); }}>
               <QrCode size={18} color="#a78bfa" />
               Show Payment QR Code
+            </button>
+
+            <div className="am-divider"><span>other payment options</span></div>
+
+            {/* Razorpay - separate at bottom */}
+            <button className="am-razorpay-btn" onClick={() => handleUPIApp({ id: 'razorpay' })} disabled={loading}>
+              <div className="am-rp-left">
+                <div className="am-rp-icon">💳</div>
+                <div>
+                  <span className="am-rp-title">Cards / Net Banking</span>
+                  <span className="am-rp-sub">Debit · Credit · Net Banking · Wallets</span>
+                </div>
+              </div>
+              <div className="am-rp-badge">Razorpay</div>
             </button>
           </>
         )}

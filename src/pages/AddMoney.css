@@ -196,3 +196,28 @@
   .addmoney-card { padding: 20px 16px; }
   .am-amount-input { font-size: 36px; width: 160px; }
 }
+
+.am-divider {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 11px; color: #475569; margin: 8px 0;
+}
+.am-divider::before, .am-divider::after { content: ''; flex: 1; height: 1px; background: #1e293b; }
+
+.am-razorpay-btn {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 14px 16px;
+  background: #0a0f1e; border: 1px solid #1e293b;
+  border-radius: 14px; cursor: pointer; transition: all 0.2s;
+}
+.am-razorpay-btn:hover:not(:disabled) { border-color: #a78bfa; }
+.am-razorpay-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.am-rp-left  { display: flex; align-items: center; gap: 12px; }
+.am-rp-icon  { font-size: 24px; }
+.am-rp-title { display: block; font-size: 14px; font-weight: 600; color: #e2e8f0; text-align: left; }
+.am-rp-sub   { display: block; font-size: 12px; color: #64748b; margin-top: 2px; }
+.am-rp-badge {
+  background: #a78bfa22; border: 1px solid #a78bfa44;
+  color: #a78bfa; font-size: 11px; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px; white-space: nowrap;
+}
