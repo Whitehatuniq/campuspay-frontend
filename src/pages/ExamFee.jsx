@@ -160,7 +160,7 @@ export default function ExamFee() {
           toUpi="9667295900-3@ybl"
           accentColor={payingFee.category === 'hostel' ? '#a78bfa' : '#38bdf8'}
           walletBalance={balance}
-          apiEndpoint="/api/fees/pay-fee"
+          apiEndpoint="/api/fees/pay/fee_id"
           apiPayload={{ fee_id: payingFee.fee_id }}
           onSuccess={() => {
             setFees(prev => prev.map(f => f.fee_id === payingFee.fee_id

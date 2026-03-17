@@ -24,7 +24,7 @@ export default function Dashboard() {
     try {
       const [walletRes, txRes] = await Promise.all([
         API.get('/api/wallet/balance'),
-        API.get('/api/transactions/history?limit=5'),
+        API.get('/api/transaction/history?limit=5'),
       ]);
       setBalance(walletRes.data.balance || 0);
       setTransactions(txRes.data.transactions || []);
