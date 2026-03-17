@@ -134,8 +134,8 @@ export default function Statement() {
               <tr>
                 <td>${i + 1}</td>
                 <td>${new Date(t.timestamp).toLocaleString('en-IN')}</td>
-                <td>${t.description || t.payment_type}</td>
-                <td>${TYPE_LABELS[t.payment_type] || t.payment_type}</td>
+                <td>${t.direction === "credit" ? "Money Received" : (t.description || "Money Sent")}</td>
+                <td>${t.direction === "credit" ? "Received" : (TYPE_LABELS[t.payment_type] || t.payment_type)}</td>
                 <td class="${t.direction === 'debit' ? 'debit-row' : 'credit-row'}">
                   ${t.direction === 'debit' ? '-' : '+'}₹${t.amount?.toFixed(2)}
                 </td>
