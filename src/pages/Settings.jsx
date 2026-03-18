@@ -437,10 +437,7 @@ export default function Settings() {
                 <span className="dev-meta-label">🔒 Specialization</span>
                 <span className="dev-meta-val">Cyber Security</span>
               </div>
-              <div className="dev-meta-row">
-                <span className="dev-meta-label">⚡ Built with</span>
-                <span className="dev-meta-val">Claude AI + Eklavya</span>
-              </div>
+
             </div>
 
             <div className="dev-footer">
