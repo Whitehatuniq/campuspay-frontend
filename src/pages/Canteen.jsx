@@ -7,28 +7,28 @@ import './Canteen.css';
 
 // Real food image URLs from Unsplash/Wikipedia (free to use)
 const FOOD_IMAGES = {
-  'Poha': 'https://i.imgur.com/KBqTDSx.jpeg',
-  'Samosa (2 pcs)': 'https://i.imgur.com/8WcBFoE.jpeg',
-  'Aloo Paratha': 'https://i.imgur.com/3HzNjSR.jpeg',
-  'Dal Rice': 'https://i.imgur.com/7bKx3Nh.jpeg',
-  'Rajma Chawal': 'https://i.imgur.com/x3lQUmH.jpeg',
-  'Veg Thali': 'https://i.imgur.com/W6LrCgL.jpeg',
-  'Bread Omelette': 'https://i.imgur.com/lp6jqVM.jpeg',
-  'Pav Bhaji': 'https://i.imgur.com/0QGfPJe.jpeg',
-  'Maggi': 'https://i.imgur.com/mVl0QxQ.jpeg',
-  'Kurkure Chaat': 'https://i.imgur.com/ZtJ5gzL.jpeg',
-  'Bhel Puri': 'https://i.imgur.com/9C7KQZQ.jpeg',
-  'Veg Sandwich': 'https://i.imgur.com/4t4t4t4.jpeg',
-  'Paneer Sandwich': 'https://i.imgur.com/4t4t4t4.jpeg',
-  'Chole Bhature': 'https://i.imgur.com/yxZ5cqA.jpeg',
-  'Veg Burger': 'https://i.imgur.com/2yGp6Dx.jpeg',
-  'Chai': 'https://i.imgur.com/NjW3bGW.jpeg',
-  'Cold Coffee': 'https://i.imgur.com/YCg7L9p.jpeg',
-  'Lassi': 'https://i.imgur.com/8kqRqZl.jpeg',
-  'Nimbu Pani': 'https://i.imgur.com/wLMcDoN.jpeg',
+  'Poha':             'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=400&q=80',
+  'Samosa (2 pcs)':   'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=80',
+  'Aloo Paratha':     'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&q=80',
+  'Dal Rice':         'https://images.unsplash.com/photo-1546549032-9571cd6b27df?w=400&q=80',
+  'Rajma Chawal':     'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&q=80',
+  'Veg Thali':        'https://images.unsplash.com/photo-1567337710282-00832b415979?w=400&q=80',
+  'Bread Omelette':   'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400&q=80',
+  'Pav Bhaji':        'https://images.unsplash.com/photo-1606491048802-8342506d6471?w=400&q=80',
+  'Maggi':            'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=400&q=80',
+  'Kurkure Chaat':    'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&q=80',
+  'Bhel Puri':        'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&q=80',
+  'Veg Sandwich':     'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&q=80',
+  'Paneer Sandwich':  'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&q=80',
+  'Chole Bhature':    'https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=400&q=80',
+  'Veg Burger':       'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80',
+  'Chai':             'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&q=80',
+  'Cold Coffee':      'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=80',
+  'Lassi':            'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&q=80',
+  'Nimbu Pani':       'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&q=80',
   'Cold Drink (Can)': 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&q=80',
   'Water Bottle':     'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&q=80',
-  'Mango Shake': 'https://i.imgur.com/8kqRqZl.jpeg',
+  'Mango Shake':      'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&q=80',
   'Espresso':         'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&q=80',
   'Cappuccino':       'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&q=80',
   'Cold Brew':        'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=80',
@@ -42,7 +42,7 @@ const FOOD_IMAGES = {
   'Cheesecake Slice': 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400&q=80',
   'French Fries':     'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&q=80',
   'Dalgona Coffee':   'https://images.unsplash.com/photo-1591039926950-a44b9b455c0c?w=400&q=80',
-  'Rose Milk':        'https://www.vegrecipesofindia.com/wp-content/uploads/2021/06/sweet-lassi-1.jpg',
+  'Rose Milk':        'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&q=80',
   'Bubble Tea':       'https://images.unsplash.com/photo-1558857563-b371033873b8?w=400&q=80',
   'Smoothie Bowl':    'https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?w=400&q=80',
   'Avocado Toast':    'https://images.unsplash.com/photo-1541519227354-08fa5d50c820?w=400&q=80',
@@ -57,9 +57,10 @@ const FOOD_IMAGES = {
 
 const getFoodImage = (name) => {
   if (FOOD_IMAGES[name]) return FOOD_IMAGES[name];
-  // Use DuckDuckGo image search proxy for food images
-  const query = encodeURIComponent(name + ' indian food dish');
-  return 'https://loremflickr.com/320/240/' + encodeURIComponent(name.split(' ')[0].toLowerCase()) + ',food?lock=' + name.length;
+  const key = Object.keys(FOOD_IMAGES).find(k =>
+    name.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(name.toLowerCase())
+  );
+  return key ? FOOD_IMAGES[key] : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80';
 };
 
 const CANTEENS = [
