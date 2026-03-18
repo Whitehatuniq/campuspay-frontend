@@ -112,11 +112,12 @@ export default function NotificationBell() {
   // Show time the notification was CREATED (when canteen owner acted)
   const timeAgo = (iso) => {
     if (!iso) return '';
-    const d = Math.floor((Date.now() - new Date(iso)) / 60000);
+    const date = new Date(iso.endsWith('Z') ? iso : iso + 'Z');
+    const d = Math.floor((Date.now() - date.getTime()) / 60000);
     if (d < 1)    return 'just now';
-    if (d < 60)   return `${d} min ago`;
-    if (d < 1440) return `${Math.floor(d/60)} hr ago`;
-    return `${Math.floor(d/1440)} day ago`;
+    if (d < 60)   return d + ' min ago';
+    if (d < 1440) return Math.floor(d/60) + ' hr ago';
+    return Math.floor(d/1440) + ' day ago';
   };
 
   return (

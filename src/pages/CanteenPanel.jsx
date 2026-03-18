@@ -129,11 +129,13 @@ export default function CanteenPanel() {
 
   const timeAgo = (iso) => {
     if (!iso) return '';
-    const d = Math.floor((Date.now() - new Date(iso)) / 60000);
+    // Parse UTC time correctly
+    const date = new Date(iso.endsWith('Z') ? iso : iso + 'Z');
+    const d = Math.floor((Date.now() - date.getTime()) / 60000);
     if (d < 1)    return 'just now';
-    if (d < 60)   return `${d}m ago`;
-    if (d < 1440) return `${Math.floor(d/60)}h ago`;
-    return `${Math.floor(d/1440)}d ago`;
+    if (d < 60)   return d + ' min ago';
+    if (d < 1440) return Math.floor(d/60) + ' hr ago';
+    return Math.floor(d/1440) + ' day ago';
   };
 
   const formatTime = (iso) => {
