@@ -39,7 +39,7 @@ export default function NotificationBell() {
         setTimeout(() => setRinging(false), 1000);
       }
       prevCount.current = newUnread;
-      setNotifs(data);
+      setNotifs(data.filter(n => n.is_read === false));
     } catch(e) {}
   };
 
