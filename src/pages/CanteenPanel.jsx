@@ -71,7 +71,7 @@ export default function CanteenPanel() {
 
   const loadOrders = useCallback(async () => {
     try {
-      const res  = await API.get(`/api/canteen/orders/canteen/${canteenId}`);
+      const res  = await API.get(`/api/canteen/orders/today/${canteenId}`);
       const data = res.data || [];
 
       // Detect truly new orders
@@ -117,8 +117,9 @@ export default function CanteenPanel() {
 
   const toggleMenu = async (itemId, cur) => {
     try {
-      await API.patch(`/api/canteen/menu/${itemId}/toggle`);
-      setMenu(prev => prev.map(i => i.item_id === itemId ? { ...i, is_available: !cur } : i));
+      const toggleRes = await API.patch(`/api/canteen/menu/${itemId}/toggle`);
+      const newAvail = toggleRes.data?.is_available;
+      setMenu(prev => prev.map(i => i.item_id === itemId ? { ...i, is_available: newAvail !== undefined ? newAvail : !cur } : i));
     } catch(e) {}
   };
 
