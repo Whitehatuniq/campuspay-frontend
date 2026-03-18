@@ -391,62 +391,54 @@ export default function Settings() {
 
           {/* ── DEVELOPER ── */}
           {tab === 'developer' && <div className="settings-section dev-section">
-            <div className="dev-header">
-              <div className="dev-badge">👨‍💻 Developer</div>
-            </div>
-            <div className="dev-card">
-              <div className="dev-avatar-wrap">
-                <div className="dev-avatar">EJ</div>
-                <div className="dev-online-dot" />
+            <div className="dev-hero">
+              <div className="dev-hero-top">
+                <div className="dev-ava">
+                  <div className="dev-ava-ring"><div className="dev-ava-inner">EJ</div></div>
+                  <div className="dev-ava-status" />
+                </div>
+                <div className="dev-hero-info">
+                  <h2 className="dev-hero-name">Eklavya Jaiswal</h2>
+                  <p className="dev-hero-title">Full Stack Developer · Security Researcher</p>
+                  <span className="dev-hero-degree">🎓 BCA — Cyber Security</span>
+                  <span className="dev-hero-uni">📍 Poornima University, Jaipur</span>
+                </div>
               </div>
-              <div className="dev-info">
-                <h3 className="dev-name">Eklavya Jaiswal</h3>
-                <p className="dev-role">Full Stack Developer</p>
-                <p className="dev-degree">BCA — Cyber Security</p>
-                <p className="dev-college">Poornima University, Jaipur</p>
+              <p className="dev-about-text">Passionate about building secure, scalable web applications. CampusPay is a complete campus fintech solution — featuring real-time payments, canteen ordering, event management and transport tracking — built with React.js, FastAPI and Firebase.</p>
+            </div>
+            <div className="dev-stats">
+              <div className="dev-stat-box"><div className="dev-stat-num" style={{color:'#38bdf8'}}>15+</div><div className="dev-stat-lbl">Features Built</div></div>
+              <div className="dev-stat-box"><div className="dev-stat-num" style={{color:'#22c55e'}}>3</div><div className="dev-stat-lbl">Canteens Live</div></div>
+              <div className="dev-stat-box"><div className="dev-stat-num" style={{color:'#a78bfa'}}>2026</div><div className="dev-stat-lbl">Project Year</div></div>
+            </div>
+            <div className="dev-skills-card">
+              <div className="dev-skills-title">Tech Stack</div>
+              <div className="dev-skills-grid">
+                {[{icon:'⚛️',name:'React.js'},{icon:'🐍',name:'FastAPI'},{icon:'🔥',name:'Firebase'},{icon:'🔒',name:'Cyber Sec'},{icon:'🎨',name:'UI/UX'},{icon:'☁️',name:'Cloud Deploy'}].map(s => (
+                  <div key={s.name} className="dev-skill"><span className="dev-skill-icon">{s.icon}</span><span className="dev-skill-name">{s.name}</span></div>
+                ))}
               </div>
             </div>
-
-            <div className="dev-about">
-              <p>
-                Passionate about building secure and scalable web applications.
-                Developed CampusPay as a complete campus payment solution —
-                from wallet management to real-time canteen ordering — using
-                React.js, FastAPI, and Firebase.
-              </p>
+            <div className="dev-timeline">
+              <div className="dev-timeline-title">Project Journey</div>
+              {[{label:'Project Kickoff',sub:'Designed architecture & database schema',date:'March 2026',color:'#38bdf8'},{label:'Core Wallet System',sub:'Auth, payments, UPI integration',date:'March 2026',color:'#22c55e'},{label:'Canteen Ordering System',sub:'Real-time orders, owner panel, notifications',date:'March 2026',color:'#fbbf24'},{label:'Production Launch',sub:'Deployed on Vercel + Render',date:'March 2026',color:'#a78bfa'}].map((item,i) => (
+                <div key={i} className="dev-timeline-item">
+                  <div className="dev-timeline-dot-wrap"><div className="dev-timeline-dot" style={{borderColor:item.color,background:item.color+'33'}} /><div className="dev-timeline-line" /></div>
+                  <div className="dev-timeline-content"><div className="dev-timeline-label">{item.label}</div><div className="dev-timeline-sub">{item.sub}</div><div className="dev-timeline-date">{item.date}</div></div>
+                </div>
+              ))}
             </div>
-
-            <div className="dev-tags">
-              <span className="dev-tag">React.js</span>
-              <span className="dev-tag">FastAPI</span>
-              <span className="dev-tag">Firebase</span>
-              <span className="dev-tag">Python</span>
-              <span className="dev-tag">Cyber Security</span>
-              <span className="dev-tag">UI/UX</span>
-            </div>
-
-            <div className="dev-meta">
-              <div className="dev-meta-row">
-                <span className="dev-meta-label">📅 Project Started</span>
-                <span className="dev-meta-val">March 2026</span>
+            <div className="dev-footer-card">
+              <div className="dev-footer-heart">❤️</div>
+              <div className="dev-footer-text">Made with passion for Poornima University</div>
+              <div className="dev-footer-sub">CampusPay v2.0.0 · March 2026</div>
+              <div className="dev-footer-chips">
+                <span className="dev-footer-chip">⚡ FastAPI Backend</span>
+                <span className="dev-footer-chip">🌐 Vercel Frontend</span>
+                <span className="dev-footer-chip">🔥 Firebase DB</span>
               </div>
-              <div className="dev-meta-row">
-                <span className="dev-meta-label">🏫 Institution</span>
-                <span className="dev-meta-val">Poornima University</span>
-              </div>
-              <div className="dev-meta-row">
-                <span className="dev-meta-label">🔒 Specialization</span>
-                <span className="dev-meta-val">Cyber Security</span>
-              </div>
-
             </div>
-
-            <div className="dev-footer">
-              <span>Made with ❤️ for Poornima University</span>
-              <span className="dev-version">v2.0.0</span>
-            </div>
-          </div>}
-        </div>
+          </div>}        </div>
       </div>
     </div>
   );
