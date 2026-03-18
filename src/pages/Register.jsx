@@ -33,7 +33,7 @@ export default function Register() {
   const [loading,    setLoading]    = useState(false);
   const [error,      setError]      = useState('');
   const [suggestion, setSuggestion] = useState('');
-  const { register } = useAuth();
+  const { register, login } = useAuth();
   const navigate     = useNavigate();
 
   const strength       = getStrength(password);
@@ -52,6 +52,7 @@ export default function Register() {
     setLoading(true);
     try {
       await register({ name, email, password, enrollment_no: enrollment });
+      await login(email, password);
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.detail || 'Registration failed. Try again.');
