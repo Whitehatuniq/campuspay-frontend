@@ -58,10 +58,16 @@ export default function NotificationBell() {
     setNotifs(prev => prev.map(n => ({ ...n, is_read: true })));
   };
 
-  const clearAll = () => setNotifs([]);
+  const clearAll = async () => {
+    await Promise.all(notifs.map(n =>
+      API.patch(`/api/canteen/notifications/${n.id}/read`).catch(() => {})
+    ));
+    setNotifs([]);
+  };
 
-  const dismiss = (id, e) => {
+  const dismiss = async (id, e) => {
     e.stopPropagation();
+    await API.patch(`/api/canteen/notifications/${id}/read`).catch(() => {});
     setNotifs(prev => prev.filter(n => n.id !== id));
   };
 
