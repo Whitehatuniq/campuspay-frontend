@@ -7,28 +7,28 @@ import './Canteen.css';
 
 // Real food image URLs from Unsplash/Wikipedia (free to use)
 const FOOD_IMAGES = {
-  'Poha':             'https://www.vegrecipesofindia.com/wp-content/uploads/2021/05/poha-recipe-1.jpg',
-  'Samosa (2 pcs)':   'https://www.vegrecipesofindia.com/wp-content/uploads/2015/10/samosa-recipe-1.jpg',
-  'Aloo Paratha':     'https://www.vegrecipesofindia.com/wp-content/uploads/2009/07/aloo-paratha-1.jpg',
-  'Dal Rice':         'https://www.vegrecipesofindia.com/wp-content/uploads/2018/05/dal-rice-1.jpg',
-  'Rajma Chawal':     'https://www.vegrecipesofindia.com/wp-content/uploads/2019/03/rajma-chawal-1.jpg',
-  'Veg Thali':        'https://www.vegrecipesofindia.com/wp-content/uploads/2021/09/thali-recipe-1.jpg',
-  'Bread Omelette':   'https://www.vegrecipesofindia.com/wp-content/uploads/2020/09/bread-omelette-1.jpg',
-  'Pav Bhaji':        'https://www.vegrecipesofindia.com/wp-content/uploads/2012/06/pav-bhaji-recipe-1.jpg',
-  'Maggi':            'https://www.vegrecipesofindia.com/wp-content/uploads/2021/04/maggi-recipe-1.jpg',
-  'Kurkure Chaat':    'https://www.vegrecipesofindia.com/wp-content/uploads/2020/10/chaat-recipe-1.jpg',
-  'Bhel Puri':        'https://www.vegrecipesofindia.com/wp-content/uploads/2014/08/bhel-puri-recipe-1.jpg',
-  'Veg Sandwich':     'https://www.vegrecipesofindia.com/wp-content/uploads/2021/03/sandwich-recipe-1.jpg',
-  'Paneer Sandwich':  'https://www.vegrecipesofindia.com/wp-content/uploads/2021/03/sandwich-recipe-1.jpg',
-  'Chole Bhature':    'https://www.vegrecipesofindia.com/wp-content/uploads/2009/07/chole-bhature-recipe-1.jpg',
-  'Veg Burger':       'https://www.vegrecipesofindia.com/wp-content/uploads/2020/09/veg-burger-1.jpg',
-  'Chai':             'https://www.vegrecipesofindia.com/wp-content/uploads/2021/01/masala-chai-1.jpg',
-  'Cold Coffee':      'https://www.vegrecipesofindia.com/wp-content/uploads/2021/05/cold-coffee-1.jpg',
-  'Lassi':            'https://www.vegrecipesofindia.com/wp-content/uploads/2021/06/sweet-lassi-1.jpg',
-  'Nimbu Pani':       'https://www.vegrecipesofindia.com/wp-content/uploads/2021/04/nimbu-pani-1.jpg',
+  'Poha': 'https://i.imgur.com/KBqTDSx.jpeg',
+  'Samosa (2 pcs)': 'https://i.imgur.com/8WcBFoE.jpeg',
+  'Aloo Paratha': 'https://i.imgur.com/3HzNjSR.jpeg',
+  'Dal Rice': 'https://i.imgur.com/7bKx3Nh.jpeg',
+  'Rajma Chawal': 'https://i.imgur.com/x3lQUmH.jpeg',
+  'Veg Thali': 'https://i.imgur.com/W6LrCgL.jpeg',
+  'Bread Omelette': 'https://i.imgur.com/lp6jqVM.jpeg',
+  'Pav Bhaji': 'https://i.imgur.com/0QGfPJe.jpeg',
+  'Maggi': 'https://i.imgur.com/mVl0QxQ.jpeg',
+  'Kurkure Chaat': 'https://i.imgur.com/ZtJ5gzL.jpeg',
+  'Bhel Puri': 'https://i.imgur.com/9C7KQZQ.jpeg',
+  'Veg Sandwich': 'https://i.imgur.com/4t4t4t4.jpeg',
+  'Paneer Sandwich': 'https://i.imgur.com/4t4t4t4.jpeg',
+  'Chole Bhature': 'https://i.imgur.com/yxZ5cqA.jpeg',
+  'Veg Burger': 'https://i.imgur.com/2yGp6Dx.jpeg',
+  'Chai': 'https://i.imgur.com/NjW3bGW.jpeg',
+  'Cold Coffee': 'https://i.imgur.com/YCg7L9p.jpeg',
+  'Lassi': 'https://i.imgur.com/8kqRqZl.jpeg',
+  'Nimbu Pani': 'https://i.imgur.com/wLMcDoN.jpeg',
   'Cold Drink (Can)': 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&q=80',
   'Water Bottle':     'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&q=80',
-  'Mango Shake':      'https://www.vegrecipesofindia.com/wp-content/uploads/2021/05/mango-milkshake-1.jpg',
+  'Mango Shake': 'https://i.imgur.com/8kqRqZl.jpeg',
   'Espresso':         'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&q=80',
   'Cappuccino':       'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&q=80',
   'Cold Brew':        'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=80',
@@ -56,15 +56,10 @@ const FOOD_IMAGES = {
 };
 
 const getFoodImage = (name) => {
-  // Try exact match first
   if (FOOD_IMAGES[name]) return FOOD_IMAGES[name];
-  // Try partial match
-  const key = Object.keys(FOOD_IMAGES).find(k => 
-    name.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(name.toLowerCase())
-  );
-  if (key) return FOOD_IMAGES[key];
-  // Default food image
-  return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=320&q=80';
+  // Use DuckDuckGo image search proxy for food images
+  const query = encodeURIComponent(name + ' indian food dish');
+  return 'https://loremflickr.com/320/240/' + encodeURIComponent(name.split(' ')[0].toLowerCase()) + ',food?lock=' + name.length;
 };
 
 const CANTEENS = [
