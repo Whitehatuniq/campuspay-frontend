@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { User, Shield, Lock, Palette, Camera, Upload, Check, Eye, EyeOff, Sun, Moon } , Code } from 'lucide-react';
+import { User, Shield, Lock, Palette, Camera, Upload, Check, Eye, EyeOff, Sun, Moon, Code } from 'lucide-react';
 import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import './Pay.css';
