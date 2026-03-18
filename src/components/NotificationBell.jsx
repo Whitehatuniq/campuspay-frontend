@@ -3,6 +3,23 @@ import { Bell, ShoppingBag, CreditCard, CheckCircle, Clock, Trash2, X, Package }
 import API from '../api/axios';
 import './NotificationBell.css';
 
+const playNotifSound = () => {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(523, ctx.currentTime);
+    osc.frequency.setValueAtTime(659, ctx.currentTime + 0.1);
+    osc.frequency.setValueAtTime(784, ctx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.4);
+  } catch(e) {}
+};
+
 export default function NotificationBell() {
   const [notifs,  setNotifs]  = useState([]);
   const [open,    setOpen]    = useState(false);
@@ -36,6 +53,7 @@ export default function NotificationBell() {
       // Ring bell if new notifications arrived
       if (newUnread > prevCount.current) {
         setRinging(true);
+        playNotifSound();
         setTimeout(() => setRinging(false), 1000);
       }
       prevCount.current = newUnread;
@@ -90,11 +108,12 @@ export default function NotificationBell() {
   };
 
   const timeAgo = (iso) => {
+    if (!iso) return '';
     const d = Math.floor((Date.now() - new Date(iso)) / 60000);
     if (d < 1)    return 'just now';
-    if (d < 60)   return `${d}m ago`;
-    if (d < 1440) return `${Math.floor(d/60)}h ago`;
-    return `${Math.floor(d/1440)}d ago`;
+    if (d < 60)   return d + 'm ago';
+    if (d < 1440) return Math.floor(d/60) + 'h ago';
+    return Math.floor(d/1440) + 'd ago';
   };
 
   const getStatusLabel = (type, status) => {
