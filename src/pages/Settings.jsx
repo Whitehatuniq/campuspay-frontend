@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { Code, useState, useEffect, useRef } from 'react';
 import { User, Shield, Lock, Palette, Camera, Upload, Check, Eye, EyeOff, Sun, Moon } from 'lucide-react';
 import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
@@ -29,6 +29,7 @@ const TABS = [
   { id: 'security',  label: 'Security',   icon: Shield  },
   { id: 'applock',   label: 'App Lock',   icon: Lock    },
   { id: 'appearance',label: 'Appearance', icon: Palette },
+  { id: 'developer', label: 'Developer',  icon: Code    },
 ];
 
 export default function Settings() {
@@ -389,7 +390,7 @@ export default function Settings() {
           )}
 
           {/* ── DEVELOPER ── */}
-          <div className="settings-section dev-section">
+          {tab === 'developer' && <div className="settings-section dev-section">
             <div className="dev-header">
               <div className="dev-badge">👨‍💻 Developer</div>
             </div>
@@ -444,7 +445,7 @@ export default function Settings() {
               <span>Made with ❤️ for Poornima University</span>
               <span className="dev-version">v2.0.0</span>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     </div>
