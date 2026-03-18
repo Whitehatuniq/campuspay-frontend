@@ -387,6 +387,67 @@ export default function Settings() {
               </div>
             </div>
           )}
+
+          {/* ── DEVELOPER ── */}
+          <div className="settings-section dev-section">
+            <div className="dev-header">
+              <div className="dev-badge">👨‍💻 Developer</div>
+            </div>
+            <div className="dev-card">
+              <div className="dev-avatar-wrap">
+                <div className="dev-avatar">EJ</div>
+                <div className="dev-online-dot" />
+              </div>
+              <div className="dev-info">
+                <h3 className="dev-name">Eklavya Jaiswal</h3>
+                <p className="dev-role">Full Stack Developer</p>
+                <p className="dev-degree">BCA — Cyber Security</p>
+                <p className="dev-college">Poornima University, Jaipur</p>
+              </div>
+            </div>
+
+            <div className="dev-about">
+              <p>
+                Passionate about building secure and scalable web applications.
+                Developed CampusPay as a complete campus payment solution —
+                from wallet management to real-time canteen ordering — using
+                React.js, FastAPI, and Firebase.
+              </p>
+            </div>
+
+            <div className="dev-tags">
+              <span className="dev-tag">React.js</span>
+              <span className="dev-tag">FastAPI</span>
+              <span className="dev-tag">Firebase</span>
+              <span className="dev-tag">Python</span>
+              <span className="dev-tag">Cyber Security</span>
+              <span className="dev-tag">UI/UX</span>
+            </div>
+
+            <div className="dev-meta">
+              <div className="dev-meta-row">
+                <span className="dev-meta-label">📅 Project Started</span>
+                <span className="dev-meta-val">March 2026</span>
+              </div>
+              <div className="dev-meta-row">
+                <span className="dev-meta-label">🏫 Institution</span>
+                <span className="dev-meta-val">Poornima University</span>
+              </div>
+              <div className="dev-meta-row">
+                <span className="dev-meta-label">🔒 Specialization</span>
+                <span className="dev-meta-val">Cyber Security</span>
+              </div>
+              <div className="dev-meta-row">
+                <span className="dev-meta-label">⚡ Built with</span>
+                <span className="dev-meta-val">Claude AI + Eklavya</span>
+              </div>
+            </div>
+
+            <div className="dev-footer">
+              <span>Made with ❤️ for Poornima University</span>
+              <span className="dev-version">v2.0.0</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
