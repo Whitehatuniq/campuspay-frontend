@@ -28,19 +28,20 @@ export default function CanteenPanel() {
 
   useEffect(() => {
     loadOrders(); loadMenu();
-    pollRef.current = setInterval(loadOrders, 10000);
+    pollRef.current = setInterval(loadOrders, 5000);
     return () => clearInterval(pollRef.current);
   }, []);
 
   const playAlert = () => {
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      // Louder and longer alert sound
       [0, 0.15, 0.3].forEach(d => {
         const o = ctx.createOscillator(); const g = ctx.createGain();
         o.connect(g); g.connect(ctx.destination);
         o.frequency.value = 880;
-        g.gain.setValueAtTime(0.3, ctx.currentTime + d);
-        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + d + 0.2);
+        g.gain.setValueAtTime(0.8, ctx.currentTime + d);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + d + 0.4);
         o.start(ctx.currentTime + d); o.stop(ctx.currentTime + d + 0.2);
       });
     } catch(e) {}
