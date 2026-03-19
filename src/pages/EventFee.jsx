@@ -65,7 +65,15 @@ function EventsTab({ user }) {
 
   const handleRegisterFree = async (ev) => {
     try {
-      await API.post('/api/events/register', { event_id: ev.event_id });
+      await API.post('/api/events/register', {
+        event_id: ev.event_id,
+        name: user?.name || '',
+        branch: 'BCA Cyber Security',
+        year: '2024',
+        enrollment_no: user?.enrollment_no || '2024BCA001',
+        contact_no: user?.phone || '9999999999',
+        upi_pin: '0000',
+      });
       setMyRegs(r => [...r, ev.event_id]);
       setSuccess(ev.event_name || ev.name);
       setTimeout(() => setSuccess(null), 3000);
@@ -162,7 +170,15 @@ function EventsTab({ user }) {
         apiEndpoint="/api/payment/pay"
         apiPayload={{ receiver_upi: 'poornima.university@campuspay', payment_type: 'event_fee', description: `Event: ${selected?.event_name || selected?.name}` }}
         onSuccess={async () => {
-          try { await API.post('/api/events/register', { event_id: selected?.event_id }); } catch(e) {}
+          try { await API.post('/api/events/register', {
+            event_id: selected?.event_id,
+            name: user?.name || '',
+            branch: 'BCA Cyber Security',
+            year: '2024',
+            enrollment_no: user?.enrollment_no || '2024BCA001',
+            contact_no: user?.phone || '9999999999',
+            upi_pin: '0000',
+          }); } catch(e) {}
           setMyRegs(r => [...r, selected?.event_id]);
           setBalance(b => b - (selected?.fee || 0));
           setSuccess(selected?.event_name);
