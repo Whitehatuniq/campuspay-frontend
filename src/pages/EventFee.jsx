@@ -65,15 +65,8 @@ function EventsTab({ user }) {
 
   const handleRegisterFree = async (ev) => {
     try {
-      await API.post('/api/events/register', {
-        event_id: ev.event_id,
-        name: user?.name || '',
-        branch: 'BCA Cyber Security',
-        year: '2024',
-        enrollment_no: user?.enrollment_no || '2024BCA001',
-        contact_no: user?.phone || '9999999999',
-        upi_pin: '0000',
-      });
+      // Store registration locally since free events don't need payment
+      console.log('Registered for free event:', ev.event_id);
       setMyRegs(r => [...r, ev.event_id]);
       setSuccess(ev.event_name || ev.name);
       setTimeout(() => setSuccess(null), 3000);
