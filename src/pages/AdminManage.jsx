@@ -37,6 +37,39 @@ export default function AdminManage() {
 
   if (user?.role !== 'admin') return <Navigate to="/dashboard" replace />;
 
+  const loadEventRegs = async () => {
+    setLoading(true);
+    try {
+      const [regsRes, evRes] = await Promise.all([
+        API.get('/api/events/admin/registrations'),
+        API.get('/api/events/list'),
+      ]);
+      setEventRegs(regsRes.data || []);
+      setEventsData(evRes.data || []);
+    } catch(e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const downloadCSV = (eventId) => {
+    const rows = eventId === 'all' ? eventRegs : eventRegs.filter(r => r.event_id === eventId);
+    const headers = ['Name','Branch','Year','Enrollment No','Contact','Event','Amount Paid','Date'];
+    const csv = [headers, ...rows.map(r => [
+      r.name, r.branch, r.year, r.enrollment_no,
+      r.contact_no, r.event_name, r.amount_paid > 0 ? r.amount_paid : 'FREE',
+      r.registered_at ? r.registered_at.split('T')[0] : ''
+    ])].map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'event_registrations_' + eventId + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -201,9 +234,10 @@ export default function AdminManage() {
           { id: 'canteen', label: '🍽️ Canteen Menu' },
           { id: 'fees',    label: '📝 Exam Fees' },
           { id: 'events',  label: '🎪 Events' },
+          { id: 'eventregs', label: '📋 Registrations' },
         ].map(tab => (
           <button key={tab.id} className={`admin-tab ${activeTab === tab.id ? 'active' : ''}`}
-            onClick={() => { setActiveTab(tab.id); setShowForm(false); setEditItem(null); }}>
+            onClick={() => { setActiveTab(tab.id); setShowForm(false); setEditItem(null); if(tab.id==='eventregs') loadEventRegs(); }}>
             {tab.label}
           </button>
         ))}
