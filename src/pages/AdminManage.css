@@ -217,3 +217,5 @@
 .edit-btn:hover   { border-color: #38bdf8; color: #38bdf8; }
 .delete-btn:hover { border-color: #ef4444; color: #ef4444; }
 .toggle-btn-sm:hover { border-color: #475569; color: #f1f5f9; }
+.am-event-reg-card { background:#0f172a; border:1px solid #1e293b; border-radius:16px; padding:18px; margin-bottom:14px; overflow:auto; }
+.am-event-reg-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:8px; }

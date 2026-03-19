@@ -14,6 +14,8 @@ const FEE_TYPES = ['exam_fee', 'back_fee', 'library_fine', 'event_fee', 'other']
 
 export default function AdminManage() {
   const { user } = useAuth();
+  const [eventRegs, setEventRegs] = useState([]);
+  const [eventsData, setEventsData] = useState([]);
   const [activeTab, setActiveTab] = useState('canteen');
   const [selectedCanteen, setSelectedCanteen] = useState('pu_canteen');
   const [menuItems, setMenuItems] = useState([]);
@@ -170,6 +172,15 @@ export default function AdminManage() {
 
   const setf = (setter, field) => (e) => setter(prev => ({ ...prev, [field]: e.target.value }));
 
+  const downloadCSV = (eventId) => {
+    const rows = eventId === 'all' ? eventRegs : eventRegs.filter(r => r.event_id === eventId);
+    const headers = ['Name','Branch','Year','Enrollment No','Contact','Event','Amount Paid','Date'];
+    const csv = [headers, ...rows.map(r => [r.name,r.branch,r.year,r.enrollment_no,r.contact_no,r.event_name,r.amount_paid||0,r.registered_at?.split('T')[0]])].map(r=>r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `event_registrations_${eventId}.csv`; a.click();
+  };
   return (
     <div className="admin-manage-page">
       <div className="admin-header">
@@ -278,6 +289,59 @@ export default function AdminManage() {
       )}
 
       {/* ── FEES TAB ── */}
+      {activeTab === 'eventregs' && (
+        <div className="am-section">
+          <div className="am-section-header">
+            <h2>📋 Event Registrations</h2>
+            <button className="am-add-btn" style={{background:'#22c55e'}} onClick={() => downloadCSV('all')}>
+              ⬇️ Download All CSV
+            </button>
+          </div>
+          {eventsData.map(ev => {
+            const regs = eventRegs.filter(r => r.event_id === ev.event_id);
+            return (
+              <div key={ev.event_id} className="am-event-reg-card">
+                <div className="am-event-reg-header">
+                  <div>
+                    <span style={{fontSize:20}}>{ev.emoji||'🎯'}</span>
+                    <strong style={{marginLeft:10,color:'#f1f5f9'}}>{ev.event_name||ev.name}</strong>
+                    <span style={{marginLeft:10,fontSize:12,color:'#64748b'}}>{ev.date}</span>
+                  </div>
+                  <div style={{display:'flex',alignItems:'center',gap:10}}>
+                    <span style={{background:'#38bdf822',color:'#38bdf8',padding:'3px 12px',borderRadius:20,fontSize:12,fontWeight:700}}>{regs.length} registered</span>
+                    {regs.length > 0 && <button className="am-edit-btn" onClick={() => downloadCSV(ev.event_id)}>⬇️ CSV</button>}
+                  </div>
+                </div>
+                {regs.length > 0 && (
+                  <table style={{width:'100%',borderCollapse:'collapse',marginTop:12}}>
+                    <thead>
+                      <tr style={{background:'#1e293b',fontSize:11,color:'#64748b',textTransform:'uppercase'}}>
+                        {['Name','Branch','Year','Enrollment No','Contact','Fee Paid','Date'].map(h=>(
+                          <th key={h} style={{padding:'8px 12px',textAlign:'left'}}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {regs.map((r,i) => (
+                        <tr key={i} style={{borderBottom:'1px solid #1e293b11',fontSize:13}}>
+                          <td style={{padding:'10px 12px',color:'#e2e8f0',fontWeight:600}}>{r.name}</td>
+                          <td style={{padding:'10px 12px',color:'#94a3b8'}}>{r.branch}</td>
+                          <td style={{padding:'10px 12px',color:'#94a3b8'}}>{r.year}</td>
+                          <td style={{padding:'10px 12px',color:'#94a3b8'}}>{r.enrollment_no}</td>
+                          <td style={{padding:'10px 12px',color:'#94a3b8'}}>{r.contact_no}</td>
+                          <td style={{padding:'10px 12px',color:'#22c55e',fontWeight:700}}>{r.amount_paid > 0 ? `₹${r.amount_paid}` : 'FREE'}</td>
+                          <td style={{padding:'10px 12px',color:'#475569'}}>{r.registered_at?.split('T')[0]}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+                {regs.length === 0 && <p style={{color:'#475569',fontSize:13,padding:'12px 0',margin:0}}>No registrations yet</p>}
+              </div>
+            );
+          })}
+        </div>
+      )}
       {activeTab === 'fees' && (
         <div>
           <div className="manage-toolbar">

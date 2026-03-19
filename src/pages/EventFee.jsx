@@ -49,6 +49,7 @@ function EventsTab({ user }) {
   const [balance,  setBalance]  = useState(0);
   const [myRegs,   setMyRegs]   = useState([]);
   const [success,  setSuccess]  = useState(null);
+  const [detail,   setDetail]   = useState(null);
 
   useEffect(() => {
     Promise.all([
@@ -58,130 +59,121 @@ function EventsTab({ user }) {
     ]).then(([evRes, walRes, regRes]) => {
       setEvents(evRes.data || []);
       setBalance(walRes.data?.balance || 0);
-      const regs = regRes.data || [];
-      setMyRegs(regs.map(r => r.event_id || r.id));
+      setMyRegs((regRes.data || []).map(r => r.event_id || r.id));
     }).finally(() => setLoading(false));
   }, []);
 
   const handleRegisterFree = async (ev) => {
     try {
-      // Store registration locally since free events don't need payment
-      console.log('Registered for free event:', ev.event_id);
+      await API.post('/api/events/register', {
+        event_id: ev.event_id, name: user?.name || '',
+        branch: user?.branch || 'BCA Cyber Security', year: '2024',
+        enrollment_no: user?.enrollment_no || '2024BCA001', contact_no: user?.phone || '9999999999',
+      });
       setMyRegs(r => [...r, ev.event_id]);
-      setSuccess(ev.event_name || ev.name);
-      setTimeout(() => setSuccess(null), 3000);
-    } catch(e) {
-      alert(e.response?.data?.detail || 'Registration failed');
-    }
+      setSuccess(ev.event_name); setTimeout(() => setSuccess(null), 3000);
+    } catch(e) { alert(e.response?.data?.detail || 'Registration failed'); }
+  };
+
+  const CAT = {
+    workshop: { color:'#38bdf8', bg:'#0c274222', label:'🔧 Workshop' },
+    fest:     { color:'#fbbf24', bg:'#78350f22', label:'🚀 Fest' },
+    sports:   { color:'#22c55e', bg:'#14532d22', label:'🏆 Sports' },
+    seminar:  { color:'#a78bfa', bg:'#4c1d9522', label:'🎓 Seminar' },
+    default:  { color:'#34d399', bg:'#06402422', label:'🎯 Event' },
+  };
+  const getCat = (ev) => {
+    const n = (ev.event_name||'').toLowerCase();
+    if (n.includes('workshop')||n.includes('cyber')||n.includes('ai')||n.includes('ml')) return CAT.workshop;
+    if (n.includes('fest')||n.includes('nova')||n.includes('tech')) return CAT.fest;
+    if (n.includes('sport')||n.includes('cricket')) return CAT.sports;
+    if (n.includes('seminar')||n.includes('lecture')) return CAT.seminar;
+    return CAT.default;
   };
 
   if (loading) return <div className="ef-loading"><div className="ef-spinner" /></div>;
 
+  if (detail) {
+    const cat = getCat(detail); const reg = myRegs.includes(detail.event_id);
+    return (
+      <div className="ef-detail-page">
+        <button className="ef-back-btn" onClick={() => setDetail(null)}><ArrowLeft size={16}/> Back</button>
+        <div className="ef-event-detail-hero" style={{'--c':cat.color,background:`linear-gradient(135deg,${cat.bg},#0a0f1e)`,borderColor:cat.color+'44'}}>
+          <div className="ef-event-detail-emoji">{detail.emoji||'🎯'}</div>
+          <span className="ef-event-detail-cat" style={{background:cat.bg,color:cat.color}}>{cat.label}</span>
+          <h1 style={{color:'#f1f5f9',margin:'8px 0'}}>{detail.event_name||detail.name}</h1>
+          <p style={{color:'#94a3b8',margin:0}}>{detail.description}</p>
+          <div className="ef-event-detail-stats">
+            {detail.fee>0?<span className="ef-detail-fee-badge" style={{color:cat.color,background:cat.bg}}>₹{detail.fee}</span>:<span className="ef-detail-fee-badge" style={{color:'#22c55e',background:'#14532d33'}}>🎉 FREE</span>}
+          </div>
+        </div>
+        <div className="ef-detail-info-card">
+          {[['📍 Venue',detail.venue||'PU'],['📅 Date',detail.date||'TBA'],['⏰ Time',detail.time||'TBA'],['💰 Fee',detail.fee>0?`₹${detail.fee}`:'FREE']].map(([l,v],i)=>(
+            <div key={i} className="ef-detail-info-row"><span className="ef-detail-info-label">{l}</span><span className="ef-detail-info-val">{v}</span></div>
+          ))}
+        </div>
+        {reg ? <div className="ef-registered-badge" style={{margin:'0 20px'}}><CheckCircle size={18} color="#22c55e"/> You are registered!</div>
+          : detail.fee>0 ? <button className="ef-event-pay-btn" style={{margin:'0 20px',flex:'unset',width:'calc(100% - 40px)',padding:'14px',background:cat.color}} onClick={()=>{setSelected(detail);setPayModal(true);}}>Pay ₹{detail.fee} & Register</button>
+          : <button className="ef-event-reg-btn" style={{margin:'0 20px',flex:'unset',width:'calc(100% - 40px)',padding:'14px'}} onClick={()=>handleRegisterFree(detail)}>✅ Register Free</button>}
+      </div>
+    );
+  }
+
   return (
     <div className="ef-content">
-      {success && (
-        <div className="ef-success-toast">
-          <CheckCircle size={16} color="#22c55e" />
-          Successfully registered for {success}!
-        </div>
-      )}
-
-      <div className="ef-section-title">
-        <CalendarDays size={16} color="#34d399" />
-        Upcoming Events
-        <span className="ef-count">{events.length}</span>
-      </div>
-
-      {events.length === 0 ? (
-        <div className="ef-empty">
-          <CalendarDays size={44} color="#334155" />
-          <p>No upcoming events</p>
-          <span>Check back soon!</span>
-        </div>
-      ) : (
+      {success && <div className="ef-success-toast"><CheckCircle size={16} color="#22c55e"/> Registered for {success}!</div>}
+      <div className="ef-section-title"><CalendarDays size={16} color="#34d399"/> Upcoming Events<span className="ef-count">{events.length}</span></div>
+      {events.length===0 ? <div className="ef-empty"><CalendarDays size={44} color="#334155"/><p>No upcoming events</p></div> : (
         <div className="ef-events-grid">
           {events.map(ev => {
-            const registered = myRegs.includes(ev.event_id);
+            const cat=getCat(ev); const reg=myRegs.includes(ev.event_id);
             return (
-              <div key={ev.event_id} className={`ef-event-card ${registered ? 'registered' : ''}`}>
-                <div className="ef-event-card-top">
-                  <div className="ef-event-emoji-wrap">
-                    <span className="ef-event-emoji">{ev.emoji || '🎯'}</span>
+              <div key={ev.event_id} className={`ef-event-card-new ${reg?'registered':''}`} style={{'--c':cat.color}}>
+                <div className="ef-event-card-bar" style={{background:cat.color}}/>
+                <div className="ef-event-card-body">
+                  <div className="ef-event-card-header">
+                    <div className="ef-event-icon-wrap" style={{background:cat.bg,border:`1px solid ${cat.color}33`}}>
+                      <span className="ef-event-icon-emoji">{ev.emoji||'🎯'}</span>
+                    </div>
+                    <div className="ef-event-card-badges">
+                      <span className="ef-event-cat-chip" style={{background:cat.bg,color:cat.color}}>{cat.label}</span>
+                      {ev.fee>0?<span className="ef-event-fee-chip" style={{color:cat.color}}>₹{ev.fee}</span>:<span className="ef-event-free-chip">FREE</span>}
+                    </div>
                   </div>
-                  {ev.fee > 0
-                    ? <span className="ef-fee-chip">₹{ev.fee}</span>
-                    : <span className="ef-free-chip">FREE</span>}
+                  <h3 className="ef-event-name">{ev.event_name||ev.name}</h3>
+                  <p className="ef-event-description">{ev.description}</p>
+                  <div className="ef-event-info-pills">
+                    <div className="ef-info-pill"><MapPin size={11}/><span>{ev.venue||'PU Campus'}</span></div>
+                    <div className="ef-info-pill"><Clock size={11}/><span>{ev.date||'TBA'}</span></div>
+                  </div>
+                  {reg ? <div className="ef-event-registered-row"><CheckCircle size={15} color="#22c55e"/><span>You're Registered!</span></div>
+                  : <div className="ef-event-card-actions">
+                      <button className="ef-event-detail-btn" onClick={()=>setDetail(ev)}>View Details</button>
+                      {ev.fee>0
+                        ? <button className="ef-event-pay-btn" style={{background:cat.color}} onClick={()=>{setSelected(ev);setPayModal(true);}}>Pay ₹{ev.fee} & Register</button>
+                        : <button className="ef-event-reg-btn" onClick={()=>handleRegisterFree(ev)}>Register Free</button>}
+                    </div>}
                 </div>
-
-                <h3 className="ef-event-title">{ev.event_name || ev.name}</h3>
-                <p className="ef-event-desc">{ev.description}</p>
-
-                <div className="ef-event-details">
-                  <div className="ef-event-detail-row">
-                    <MapPin size={12} color="#64748b" />
-                    <span>{ev.venue || 'Poornima University'}</span>
-                  </div>
-                  <div className="ef-event-detail-row">
-                    <Clock size={12} color="#64748b" />
-                    <span>{ev.date || 'TBA'} {ev.time ? '· ' + ev.time : ''}</span>
-                  </div>
-                </div>
-
-                {registered ? (
-                  <div className="ef-registered-badge">
-                    <CheckCircle size={15} color="#22c55e" />
-                    You're Registered!
-                  </div>
-                ) : ev.fee > 0 ? (
-                  <button className="ef-pay-btn"
-                    onClick={() => { setSelected(ev); setPayModal(true); }}>
-                    <span>Pay ₹{ev.fee} & Register</span>
-                    <ChevronRight size={15} />
-                  </button>
-                ) : (
-                  <button className="ef-register-btn"
-                    onClick={() => handleRegisterFree(ev)}>
-                    <CheckCircle size={15} />
-                    <span>Register Free</span>
-                  </button>
-                )}
               </div>
             );
           })}
         </div>
       )}
-
-      <PaymentModal
-        open={payModal}
-        onClose={() => setPayModal(false)}
-        amount={selected?.fee || 0}
-        title={selected?.event_name || selected?.name || 'Event'}
-        description={`Event Registration`}
-        toUpi="poornima.university@campuspay"
-        accentColor="#34d399"
-        walletBalance={balance}
+      <PaymentModal open={payModal} onClose={()=>setPayModal(false)} amount={selected?.fee||0}
+        title={selected?.event_name||'Event'} description="Event Registration"
+        toUpi="poornima.university@campuspay" accentColor="#34d399" walletBalance={balance}
         apiEndpoint="/api/payment/pay"
-        apiPayload={{ receiver_upi: 'poornima.university@campuspay', payment_type: 'event_fee', description: `Event: ${selected?.event_name || selected?.name}` }}
-        onSuccess={async () => {
-          try { await API.post('/api/events/register', {
-            event_id: selected?.event_id,
-            name: user?.name || '',
-            branch: 'BCA Cyber Security',
-            year: '2024',
-            enrollment_no: user?.enrollment_no || '2024BCA001',
-            contact_no: user?.phone || '9999999999',
-            upi_pin: '0000',
-          }); } catch(e) {}
-          setMyRegs(r => [...r, selected?.event_id]);
-          setBalance(b => b - (selected?.fee || 0));
-          setSuccess(selected?.event_name);
-          setTimeout(() => setSuccess(null), 3000);
-          setPayModal(false);
+        apiPayload={{receiver_upi:'poornima.university@campuspay',payment_type:'event_fee',description:`Event: ${selected?.event_name}`}}
+        onSuccess={async()=>{
+          try{await API.post('/api/events/register',{event_id:selected?.event_id,name:user?.name||'',branch:user?.branch||'BCA',year:'2024',enrollment_no:user?.enrollment_no||'2024BCA001',contact_no:user?.phone||'9999999999',upi_pin:'1234'});}catch(e){}
+          setMyRegs(r=>[...r,selected?.event_id]);setBalance(b=>b-(selected?.fee||0));
+          setSuccess(selected?.event_name);setTimeout(()=>setSuccess(null),3000);setPayModal(false);
         }}
       />
     </div>
   );
 }
+
 
 // ═══════════════════════════════════════════
 // ADS TAB

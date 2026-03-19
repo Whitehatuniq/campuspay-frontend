@@ -194,3 +194,48 @@
   .ef-blog-featured { flex-direction:column; }
   .ef-detail-actions { flex-wrap:wrap; }
 }
+
+/* ══ ATTRACTIVE EVENTS ══ */
+.ef-events-grid { display:flex; flex-direction:column; gap:16px; }
+
+.ef-event-card-new {
+  background:#0f172a; border:1px solid #1e293b;
+  border-radius:20px; overflow:hidden; transition:all 0.25s;
+  position:relative;
+}
+.ef-event-card-new:hover { border-color:var(--c,#34d399); transform:translateY(-3px); box-shadow:0 12px 40px #00000055; }
+.ef-event-card-new.registered { border-color:#22c55e33; }
+
+.ef-event-card-bar { height:4px; width:100%; }
+
+.ef-event-card-body { padding:18px; }
+
+.ef-event-card-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; gap:12px; }
+.ef-event-icon-wrap { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.ef-event-icon-emoji { font-size:26px; }
+.ef-event-card-badges { display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+.ef-event-cat-chip { font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; }
+.ef-event-fee-chip  { font-size:13px; font-weight:800; }
+.ef-event-free-chip { background:#14532d33; border:1px solid #22c55e33; color:#22c55e; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; }
+
+.ef-event-name        { font-size:16px; font-weight:800; color:#f1f5f9; margin:0 0 7px; letter-spacing:-0.3px; }
+.ef-event-description { font-size:13px; color:#64748b; margin:0 0 14px; line-height:1.5; }
+
+.ef-event-info-pills { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+.ef-info-pill { display:flex; align-items:center; gap:5px; background:#1e293b; border-radius:20px; padding:5px 12px; font-size:11px; color:#64748b; }
+
+.ef-event-registered-row { display:flex; align-items:center; gap:8px; background:#14532d22; border:1px solid #22c55e33; border-radius:12px; padding:12px 16px; color:#22c55e; font-size:14px; font-weight:700; }
+
+.ef-event-card-actions { display:flex; gap:10px; }
+.ef-event-detail-btn { flex:1; padding:11px; background:#1e293b; border:1px solid #334155; border-radius:12px; color:#94a3b8; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.ef-event-detail-btn:hover { border-color:#475569; color:#f1f5f9; }
+.ef-event-pay-btn { flex:2; padding:11px; border:none; border-radius:12px; color:#0a0f1e; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.ef-event-pay-btn:hover { filter:brightness(1.1); }
+.ef-event-reg-btn { flex:2; padding:11px; background:#22c55e; border:none; border-radius:12px; color:#0a0f1e; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.ef-event-reg-btn:hover { filter:brightness(1.1); }
+
+.ef-event-detail-hero { margin:0 20px 16px; border-radius:20px; padding:28px; border:1px solid; text-align:center; }
+.ef-event-detail-emoji { font-size:56px; margin-bottom:12px; }
+.ef-event-detail-cat { display:inline-block; font-size:10px; font-weight:800; letter-spacing:2px; padding:4px 14px; border-radius:20px; margin-bottom:12px; }
+.ef-event-detail-stats { display:flex; justify-content:center; gap:12px; margin-top:14px; }
+.ef-detail-fee-badge { font-size:16px; font-weight:800; padding:6px 20px; border-radius:20px; }
