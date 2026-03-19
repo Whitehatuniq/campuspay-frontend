@@ -53,22 +53,6 @@ export default function AdminManage() {
     }
   };
 
-  const downloadCSV = (eventId) => {
-    const rows = eventId === 'all' ? eventRegs : eventRegs.filter(r => r.event_id === eventId);
-    const headers = ['Name','Branch','Year','Enrollment No','Contact','Event','Amount Paid','Date'];
-    const csv = [headers, ...rows.map(r => [
-      r.name, r.branch, r.year, r.enrollment_no,
-      r.contact_no, r.event_name, r.amount_paid > 0 ? r.amount_paid : 'FREE',
-      r.registered_at ? r.registered_at.split('T')[0] : ''
-    ])].map(r => r.join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'event_registrations_' + eventId + '.csv';
-    a.click();
-    URL.revokeObjectURL(url);
-  };
 
   const fetchData = async () => {
     setLoading(true);
